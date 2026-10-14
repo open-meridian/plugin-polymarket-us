@@ -1,0 +1,14 @@
+{
+ "syn-nfl-cra-dev-2026-10-04": {
+  "slug": "syn-nfl-cra-dev-2026-10-04",
+  "settlement": 1
+ },
+ "syn-nfl-elk-fox-2026-10-04": {
+  "slug": "syn-nfl-elk-fox-2026-10-04",
+  "settlement": 0
+ },
+ "syn-nfl-gnu-hog-2026-10-04": {
+  "slug": "syn-nfl-gnu-hog-2026-10-04",
+  "settlement": 0.45
+ }
+}

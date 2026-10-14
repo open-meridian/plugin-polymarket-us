@@ -1,0 +1,256 @@
+{
+ "syn-nfl-aar-bob-2026-12-06": {
+  "marketData": {
+   "marketSlug": "syn-nfl-aar-bob-2026-12-06",
+   "bids": [
+    {
+     "px": {
+      "value": "0.4300",
+      "currency": "USD"
+     },
+     "qty": "550.5000"
+    },
+    {
+     "px": {
+      "value": "0.4200",
+      "currency": "USD"
+     },
+     "qty": "1200.0000"
+    },
+    {
+     "px": {
+      "value": "0.4100",
+      "currency": "USD"
+     },
+     "qty": "80.0000"
+    }
+   ],
+   "offers": [
+    {
+     "px": {
+      "value": "0.4500",
+      "currency": "USD"
+     },
+     "qty": "125.2500"
+    },
+    {
+     "px": {
+      "value": "0.4600",
+      "currency": "USD"
+     },
+     "qty": "300.0000"
+    }
+   ],
+   "state": "MARKET_STATE_OPEN",
+   "stats": {
+    "lastTradePx": {
+     "value": "0.4400",
+     "currency": "USD"
+    },
+    "lastTradeQty": "10.0000",
+    "lastTradeSetTime": "2026-10-10T11:59:41.500000000Z",
+    "sharesTraded": "12500.0000",
+    "openInterest": "4200.0000",
+    "notionalTraded": {
+     "value": "5400.0000",
+     "currency": "USD"
+    },
+    "settlementPx": {
+     "value": "0.4000",
+     "currency": "USD"
+    },
+    "settlementPriceCalculationMethod": "SETTLEMENT_PRICE_CALCULATION_METHOD_EVENT_TIER_2",
+    "settlementSetTime": "2026-10-09T21:00:00.000000000Z",
+    "lastPriceSample": null
+   },
+   "transactTime": "2026-10-10T11:59:58.123456789Z"
+  }
+ },
+ "syn-crypto-btc-above-2026-12-31-150000": {
+  "marketData": {
+   "marketSlug": "syn-crypto-btc-above-2026-12-31-150000",
+   "bids": [
+    {
+     "px": {
+      "value": "0.123456789012345677",
+      "currency": "USD"
+     },
+     "qty": "3.0000"
+    }
+   ],
+   "offers": [
+    {
+     "px": {
+      "value": "0.123456789012345679",
+      "currency": "USD"
+     },
+     "qty": "2.5000"
+    }
+   ],
+   "state": "MARKET_STATE_OPEN",
+   "stats": {
+    "lastTradePx": {
+     "value": "0.123456789012345678",
+     "currency": "USD"
+    },
+    "lastTradeQty": "10.0000",
+    "lastTradeSetTime": "2026-10-10T11:58:00.000000001Z",
+    "sharesTraded": "12500.0000",
+    "openInterest": "4200.0000",
+    "notionalTraded": {
+     "value": "5400.0000",
+     "currency": "USD"
+    },
+    "lastPriceSample": null
+   },
+   "transactTime": "2026-10-10T11:59:59.000000000Z"
+  }
+ },
+ "syn-weather-nyc-snow-2026-12-25": {
+  "marketData": {
+   "marketSlug": "syn-weather-nyc-snow-2026-12-25",
+   "bids": [
+    {
+     "px": {
+      "value": "0.1500",
+      "currency": "USD"
+     },
+     "qty": "40.0000"
+    },
+    {
+     "px": {
+      "value": "0.1400",
+      "currency": "USD"
+     },
+     "qty": "10.0000"
+    }
+   ],
+   "offers": [],
+   "state": "MARKET_STATE_OPEN",
+   "stats": {
+    "lastPriceSample": null
+   },
+   "transactTime": "2026-10-10T11:59:57.000000000Z"
+  }
+ },
+ "syn-mlb-ws-2026-three-sides": {
+  "marketData": {
+   "marketSlug": "syn-mlb-ws-2026-three-sides",
+   "bids": [
+    {
+     "px": {
+      "value": "0.2900",
+      "currency": "USD"
+     },
+     "qty": "10.0000"
+    }
+   ],
+   "offers": [
+    {
+     "px": {
+      "value": "0.3100",
+      "currency": "USD"
+     },
+     "qty": "10.0000"
+    }
+   ],
+   "state": "MARKET_STATE_OPEN",
+   "stats": {
+    "lastTradePx": {
+     "value": "0.3000",
+     "currency": "USD"
+    },
+    "lastTradeQty": "10.0000",
+    "lastTradeSetTime": "2026-10-10T09:00:00.000000000Z",
+    "sharesTraded": "12500.0000",
+    "openInterest": "4200.0000",
+    "notionalTraded": {
+     "value": "5400.0000",
+     "currency": "USD"
+    },
+    "lastPriceSample": null
+   },
+   "transactTime": "2026-10-10T11:59:50.000000000Z"
+  }
+ },
+ "syn-nfl-cra-dev-2026-10-04": {
+  "marketData": {
+   "marketSlug": "syn-nfl-cra-dev-2026-10-04",
+   "bids": [],
+   "offers": [],
+   "state": "MARKET_STATE_EXPIRED",
+   "stats": {
+    "settlementPx": {
+     "value": "1.0000",
+     "currency": "USD"
+    },
+    "settlementPriceCalculationMethod": "SETTLEMENT_PRICE_CALCULATION_METHOD_EVENT_TIER_1",
+    "lastPriceSample": null
+   },
+   "transactTime": null
+  }
+ },
+ "syn-nfl-elk-fox-2026-10-04": {
+  "marketData": {
+   "marketSlug": "syn-nfl-elk-fox-2026-10-04",
+   "bids": [],
+   "offers": [],
+   "state": "MARKET_STATE_EXPIRED",
+   "stats": {
+    "settlementPx": {
+     "value": "0.0000",
+     "currency": "USD"
+    },
+    "settlementPriceCalculationMethod": "SETTLEMENT_PRICE_CALCULATION_METHOD_EVENT_TIER_1",
+    "lastPriceSample": null
+   },
+   "transactTime": null
+  }
+ },
+ "syn-nfl-gnu-hog-2026-10-04": {
+  "marketData": {
+   "marketSlug": "syn-nfl-gnu-hog-2026-10-04",
+   "bids": [],
+   "offers": [],
+   "state": "MARKET_STATE_EXPIRED",
+   "stats": {
+    "settlementPx": {
+     "value": "0.4500",
+     "currency": "USD"
+    },
+    "settlementPriceCalculationMethod": "SETTLEMENT_PRICE_CALCULATION_METHOD_EVENT_TIER_1",
+    "lastPriceSample": null
+   },
+   "transactTime": null
+  }
+ },
+ "syn-nfl-ibx-jag-2026-10-04": {
+  "marketData": {
+   "marketSlug": "syn-nfl-ibx-jag-2026-10-04",
+   "bids": [],
+   "offers": [],
+   "state": "MARKET_STATE_EXPIRED",
+   "stats": {
+    "settlementPx": {
+     "value": "1.0000",
+     "currency": "USD"
+    },
+    "settlementPriceCalculationMethod": "SETTLEMENT_PRICE_CALCULATION_METHOD_EVENT_TIER_1",
+    "lastPriceSample": null
+   },
+   "transactTime": null
+  }
+ },
+ "syn-nfl-kit-lyn-2026-10-09": {
+  "marketData": {
+   "marketSlug": "syn-nfl-kit-lyn-2026-10-09",
+   "bids": [],
+   "offers": [],
+   "state": "MARKET_STATE_EXPIRED",
+   "stats": {
+    "lastPriceSample": null
+   },
+   "transactTime": null
+  }
+ }
+}

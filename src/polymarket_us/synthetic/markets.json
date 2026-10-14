@@ -1,0 +1,602 @@
+{
+ "syn-nfl-aar-bob-2026-12-06": {
+  "market": {
+   "id": "9101",
+   "question": "Aardvarks vs. Bobcats",
+   "slug": "syn-nfl-aar-bob-2026-12-06",
+   "endDate": "2026-12-07T18:00:00Z",
+   "category": "sports",
+   "startDate": "2026-09-01T12:00:00Z",
+   "description": "Synthetic market for tests: invented, never listed.",
+   "active": true,
+   "marketType": "moneyline",
+   "closed": false,
+   "createdAt": "2026-09-01T12:00:00Z",
+   "updatedAt": "2026-10-10T11:00:00Z",
+   "archived": false,
+   "orderPriceMinTickSize": 0.001,
+   "marketSides": [
+    {
+     "id": "91011",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-nfl-aar-bob-2026-12-06",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Aardvarks",
+     "price": "0.4500",
+     "marketId": 9101,
+     "long": true,
+     "quote": {
+      "value": "0.4500",
+      "currency": "USD"
+     },
+     "tradable": true
+    },
+    {
+     "id": "91012",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-nfl-aar-bob-2026-12-06",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Bobcats",
+     "price": "0.5700",
+     "marketId": 9101,
+     "long": false,
+     "quote": {
+      "value": "0.5700",
+      "currency": "USD"
+     },
+     "tradable": true
+    }
+   ],
+   "outcomes": "[\"Aardvarks\", \"Bobcats\"]",
+   "outcomePrices": "[\"0.4500\", \"0.5700\"]",
+   "ep3Status": "OPEN",
+   "status": "MARKET_STATUS_OPEN",
+   "assetPriceTerms": null,
+   "hidden": false,
+   "tags": [],
+   "title": "Aardvarks vs. Bobcats",
+   "subtitle": "",
+   "feeCoefficient": 0.0695,
+   "minimumTradeQty": 0.01,
+   "comboEnabled": false,
+   "bestBidQuote": {
+    "value": "0.4300",
+    "currency": "USD"
+   },
+   "bestAskQuote": {
+    "value": "0.4500",
+    "currency": "USD"
+   }
+  }
+ },
+ "syn-crypto-btc-above-2026-12-31-150000": {
+  "market": {
+   "id": "9102",
+   "question": "Bitcoin above $150,000 on December 31?",
+   "slug": "syn-crypto-btc-above-2026-12-31-150000",
+   "endDate": "2026-12-31T22:00:00Z",
+   "category": "crypto",
+   "startDate": "2026-09-01T12:00:00Z",
+   "description": "Synthetic market for tests: invented, never listed.",
+   "active": true,
+   "marketType": "",
+   "closed": false,
+   "createdAt": "2026-09-01T12:00:00Z",
+   "updatedAt": "2026-10-10T11:00:00Z",
+   "archived": false,
+   "orderPriceMinTickSize": 0.001,
+   "marketSides": [
+    {
+     "id": "91021",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-crypto-btc-above-2026-12-31-150000",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Yes",
+     "price": "0.123456789012345679",
+     "marketId": 9102,
+     "long": true,
+     "quote": {
+      "value": "0.123456789012345679",
+      "currency": "USD"
+     },
+     "tradable": true
+    },
+    {
+     "id": "91022",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-crypto-btc-above-2026-12-31-150000",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "No",
+     "price": "0.876543210987654322",
+     "marketId": 9102,
+     "long": false,
+     "quote": {
+      "value": "0.876543210987654322",
+      "currency": "USD"
+     },
+     "tradable": true
+    }
+   ],
+   "outcomes": "[\"Yes\", \"No\"]",
+   "outcomePrices": "[\"0.123456789012345679\", \"0.876543210987654322\"]",
+   "ep3Status": "OPEN",
+   "status": "MARKET_STATUS_OPEN",
+   "assetPriceTerms": null,
+   "hidden": false,
+   "tags": [],
+   "title": "$150,000 or above",
+   "subtitle": "",
+   "feeCoefficient": 0.0695,
+   "minimumTradeQty": 0.01,
+   "comboEnabled": false
+  }
+ },
+ "syn-weather-nyc-snow-2026-12-25": {
+  "market": {
+   "id": "9103",
+   "question": "Snow in New York City on December 25?",
+   "slug": "syn-weather-nyc-snow-2026-12-25",
+   "endDate": "2026-12-26T05:00:00Z",
+   "category": "weather",
+   "startDate": "2026-09-01T12:00:00Z",
+   "description": "Synthetic market for tests: invented, never listed.",
+   "active": true,
+   "marketType": "",
+   "closed": false,
+   "createdAt": "2026-09-01T12:00:00Z",
+   "updatedAt": "2026-10-10T11:00:00Z",
+   "archived": false,
+   "orderPriceMinTickSize": 0.001,
+   "marketSides": [
+    {
+     "id": "91031",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-weather-nyc-snow-2026-12-25",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Yes",
+     "price": "0.2100",
+     "marketId": 9103,
+     "long": true,
+     "quote": {
+      "value": "0.2100",
+      "currency": "USD"
+     },
+     "tradable": true
+    },
+    {
+     "id": "91032",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-weather-nyc-snow-2026-12-25",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "No",
+     "price": "0.8500",
+     "marketId": 9103,
+     "long": false,
+     "quote": {
+      "value": "0.8500",
+      "currency": "USD"
+     },
+     "tradable": true
+    }
+   ],
+   "outcomes": "[\"Yes\", \"No\"]",
+   "outcomePrices": "[\"0.2100\", \"0.8500\"]",
+   "ep3Status": "OPEN",
+   "status": "MARKET_STATUS_OPEN",
+   "assetPriceTerms": null,
+   "hidden": false,
+   "tags": [],
+   "title": "Snow on Christmas",
+   "subtitle": "",
+   "feeCoefficient": 0.0695,
+   "minimumTradeQty": 0.01,
+   "comboEnabled": false
+  }
+ },
+ "syn-mlb-ws-2026-three-sides": {
+  "market": {
+   "id": "9104",
+   "question": "World Series winner",
+   "slug": "syn-mlb-ws-2026-three-sides",
+   "endDate": "2026-11-05T04:00:00Z",
+   "category": "sports",
+   "startDate": "2026-09-01T12:00:00Z",
+   "description": "Synthetic market for tests: invented, never listed.",
+   "active": true,
+   "marketType": "futures",
+   "closed": false,
+   "createdAt": "2026-09-01T12:00:00Z",
+   "updatedAt": "2026-10-10T11:00:00Z",
+   "archived": false,
+   "orderPriceMinTickSize": 0.001,
+   "marketSides": [
+    {
+     "id": "91041",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-mlb-ws-2026-three-sides",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Herons",
+     "price": "0.3000",
+     "marketId": 9104,
+     "long": true,
+     "quote": {
+      "value": "0.3000",
+      "currency": "USD"
+     },
+     "tradable": true
+    },
+    {
+     "id": "91042",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-mlb-ws-2026-three-sides",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Ibises",
+     "price": "0.3000",
+     "marketId": 9104,
+     "long": true,
+     "quote": {
+      "value": "0.3000",
+      "currency": "USD"
+     },
+     "tradable": true
+    },
+    {
+     "id": "91043",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-mlb-ws-2026-three-sides",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Jays",
+     "price": "0.4000",
+     "marketId": 9104,
+     "long": false,
+     "quote": {
+      "value": "0.4000",
+      "currency": "USD"
+     },
+     "tradable": true
+    }
+   ],
+   "outcomes": "[\"Herons\", \"Ibises\", \"Jays\"]",
+   "outcomePrices": "[\"0.3000\", \"0.3000\", \"0.4000\"]",
+   "ep3Status": "OPEN",
+   "status": "MARKET_STATUS_OPEN",
+   "assetPriceTerms": null,
+   "hidden": false,
+   "tags": [],
+   "title": "World Series",
+   "subtitle": "",
+   "feeCoefficient": 0.0695,
+   "minimumTradeQty": 0.01,
+   "comboEnabled": false
+  }
+ },
+ "syn-nfl-cra-dev-2026-10-04": {
+  "market": {
+   "id": "9105",
+   "question": "Cranes vs. Devils",
+   "slug": "syn-nfl-cra-dev-2026-10-04",
+   "endDate": "2026-10-05T18:00:00Z",
+   "category": "sports",
+   "startDate": "2026-09-30T22:00:00Z",
+   "description": "Synthetic market for tests: invented, never listed.",
+   "active": false,
+   "marketType": "moneyline",
+   "closed": true,
+   "createdAt": "2026-09-01T12:00:00Z",
+   "updatedAt": "2026-10-10T11:00:00Z",
+   "archived": false,
+   "orderPriceMinTickSize": 0.001,
+   "marketSides": [
+    {
+     "id": "91051",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-nfl-cra-dev-2026-10-04",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Cranes",
+     "price": "1",
+     "marketId": 9105,
+     "long": true,
+     "quote": {
+      "value": "1",
+      "currency": "USD"
+     },
+     "tradable": true
+    },
+    {
+     "id": "91052",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-nfl-cra-dev-2026-10-04",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Devils",
+     "price": "0",
+     "marketId": 9105,
+     "long": false,
+     "quote": {
+      "value": "0",
+      "currency": "USD"
+     },
+     "tradable": true
+    }
+   ],
+   "outcomes": "[\"Cranes\", \"Devils\"]",
+   "outcomePrices": "[\"1\", \"0\"]",
+   "ep3Status": "EXPIRED",
+   "status": "MARKET_STATUS_RESOLVED",
+   "assetPriceTerms": null,
+   "hidden": false,
+   "tags": [],
+   "title": "Cranes vs. Devils",
+   "subtitle": "",
+   "feeCoefficient": 0.0695,
+   "minimumTradeQty": 0.01,
+   "comboEnabled": false
+  }
+ },
+ "syn-nfl-elk-fox-2026-10-04": {
+  "market": {
+   "id": "9106",
+   "question": "Elks vs. Foxes",
+   "slug": "syn-nfl-elk-fox-2026-10-04",
+   "endDate": "2026-10-05T18:00:00Z",
+   "category": "sports",
+   "startDate": "2026-09-30T22:00:00Z",
+   "description": "Synthetic market for tests: invented, never listed.",
+   "active": false,
+   "marketType": "moneyline",
+   "closed": true,
+   "createdAt": "2026-09-01T12:00:00Z",
+   "updatedAt": "2026-10-10T11:00:00Z",
+   "archived": false,
+   "orderPriceMinTickSize": 0.001,
+   "marketSides": [
+    {
+     "id": "91061",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-nfl-elk-fox-2026-10-04",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Elks",
+     "price": "0",
+     "marketId": 9106,
+     "long": true,
+     "quote": {
+      "value": "0",
+      "currency": "USD"
+     },
+     "tradable": true
+    },
+    {
+     "id": "91062",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-nfl-elk-fox-2026-10-04",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Foxes",
+     "price": "1",
+     "marketId": 9106,
+     "long": false,
+     "quote": {
+      "value": "1",
+      "currency": "USD"
+     },
+     "tradable": true
+    }
+   ],
+   "outcomes": "[\"Elks\", \"Foxes\"]",
+   "outcomePrices": "[\"0\", \"1\"]",
+   "ep3Status": "EXPIRED",
+   "status": "MARKET_STATUS_RESOLVED",
+   "assetPriceTerms": null,
+   "hidden": false,
+   "tags": [],
+   "title": "Elks vs. Foxes",
+   "subtitle": "",
+   "feeCoefficient": 0.0695,
+   "minimumTradeQty": 0.01,
+   "comboEnabled": false
+  }
+ },
+ "syn-nfl-gnu-hog-2026-10-04": {
+  "market": {
+   "id": "9107",
+   "question": "Gnus vs. Hogs",
+   "slug": "syn-nfl-gnu-hog-2026-10-04",
+   "endDate": "2026-10-05T18:00:00Z",
+   "category": "sports",
+   "startDate": "2026-09-30T22:00:00Z",
+   "description": "Synthetic market for tests: invented, never listed.",
+   "active": false,
+   "marketType": "moneyline",
+   "closed": true,
+   "createdAt": "2026-09-01T12:00:00Z",
+   "updatedAt": "2026-10-10T11:00:00Z",
+   "archived": false,
+   "orderPriceMinTickSize": 0.001,
+   "marketSides": [
+    {
+     "id": "91071",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-nfl-gnu-hog-2026-10-04",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Gnus",
+     "price": "0.45",
+     "marketId": 9107,
+     "long": true,
+     "quote": {
+      "value": "0.45",
+      "currency": "USD"
+     },
+     "tradable": true
+    },
+    {
+     "id": "91072",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-nfl-gnu-hog-2026-10-04",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Hogs",
+     "price": "0.55",
+     "marketId": 9107,
+     "long": false,
+     "quote": {
+      "value": "0.55",
+      "currency": "USD"
+     },
+     "tradable": true
+    }
+   ],
+   "outcomes": "[\"Gnus\", \"Hogs\"]",
+   "outcomePrices": "[\"0.45\", \"0.55\"]",
+   "ep3Status": "EXPIRED",
+   "status": "MARKET_STATUS_RESOLVED",
+   "assetPriceTerms": null,
+   "hidden": false,
+   "tags": [],
+   "title": "Gnus vs. Hogs",
+   "subtitle": "",
+   "feeCoefficient": 0.0695,
+   "minimumTradeQty": 0.01,
+   "comboEnabled": false
+  }
+ },
+ "syn-nfl-ibx-jag-2026-10-04": {
+  "market": {
+   "id": "9108",
+   "question": "Ibexes vs. Jaguars",
+   "slug": "syn-nfl-ibx-jag-2026-10-04",
+   "endDate": "2026-10-05T18:00:00Z",
+   "category": "sports",
+   "startDate": "2026-09-30T22:00:00Z",
+   "description": "Synthetic market for tests: invented, never listed.",
+   "active": false,
+   "marketType": "moneyline",
+   "closed": true,
+   "createdAt": "2026-09-01T12:00:00Z",
+   "updatedAt": "2026-10-10T11:00:00Z",
+   "archived": false,
+   "orderPriceMinTickSize": 0.001,
+   "marketSides": [
+    {
+     "id": "91081",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-nfl-ibx-jag-2026-10-04",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Ibexes",
+     "price": "1",
+     "marketId": 9108,
+     "long": true,
+     "quote": {
+      "value": "1",
+      "currency": "USD"
+     },
+     "tradable": true
+    },
+    {
+     "id": "91082",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-nfl-ibx-jag-2026-10-04",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Jaguars",
+     "price": "0",
+     "marketId": 9108,
+     "long": false,
+     "quote": {
+      "value": "0",
+      "currency": "USD"
+     },
+     "tradable": true
+    }
+   ],
+   "outcomes": "[\"Ibexes\", \"Jaguars\"]",
+   "outcomePrices": "[\"1\", \"0\"]",
+   "ep3Status": "EXPIRED",
+   "status": "MARKET_STATUS_RESOLVED",
+   "assetPriceTerms": null,
+   "hidden": false,
+   "tags": [],
+   "title": "Ibexes vs. Jaguars",
+   "subtitle": "",
+   "feeCoefficient": 0.0695,
+   "minimumTradeQty": 0.01,
+   "comboEnabled": false
+  }
+ },
+ "syn-nfl-kit-lyn-2026-10-09": {
+  "market": {
+   "id": "9109",
+   "question": "Kites vs. Lynxes",
+   "slug": "syn-nfl-kit-lyn-2026-10-09",
+   "endDate": "2026-10-09T23:00:00Z",
+   "category": "sports",
+   "startDate": "2026-10-05T22:00:00Z",
+   "description": "Synthetic market for tests: invented, never listed.",
+   "active": false,
+   "marketType": "moneyline",
+   "closed": true,
+   "createdAt": "2026-09-01T12:00:00Z",
+   "updatedAt": "2026-10-10T11:00:00Z",
+   "archived": false,
+   "orderPriceMinTickSize": 0.001,
+   "marketSides": [
+    {
+     "id": "91091",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-nfl-kit-lyn-2026-10-09",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Kites",
+     "price": "0.9900",
+     "marketId": 9109,
+     "long": true,
+     "quote": {
+      "value": "0.9900",
+      "currency": "USD"
+     },
+     "tradable": true
+    },
+    {
+     "id": "91092",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-nfl-kit-lyn-2026-10-09",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Lynxes",
+     "price": "0.0100",
+     "marketId": 9109,
+     "long": false,
+     "quote": {
+      "value": "0.0100",
+      "currency": "USD"
+     },
+     "tradable": true
+    }
+   ],
+   "outcomes": "[\"Kites\", \"Lynxes\"]",
+   "outcomePrices": "[\"0.9900\", \"0.0100\"]",
+   "ep3Status": "EXPIRED",
+   "status": "MARKET_STATUS_RESOLVING",
+   "assetPriceTerms": null,
+   "hidden": false,
+   "tags": [],
+   "title": "Kites vs. Lynxes",
+   "subtitle": "",
+   "feeCoefficient": 0.0695,
+   "minimumTradeQty": 0.01,
+   "comboEnabled": false
+  }
+ }
+}
