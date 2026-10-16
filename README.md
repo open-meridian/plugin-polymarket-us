@@ -13,7 +13,7 @@ the contract's outcome, every figure exactly as Polymarket US stated it. No
 key and no account: Polymarket US's public gateway needs none. It never
 trades.
 
-**Status.** 0.1.0, built on open-meridian 0.27.0 (contract v23), holding the
+**Status.** 0.2.0, built on open-meridian 0.29.0 (contract v25: its whole declaration, and docs/, which a deployment shows on its Documentation tab), holding the
 role `data`. Not released, uploaded or launched anywhere.
 
 ## What it does

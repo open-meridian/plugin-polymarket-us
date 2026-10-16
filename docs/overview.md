@@ -7,6 +7,8 @@ Polymarket US is QCX LLC, a CFTC-designated exchange: it is not the
 international Polymarket, and this plugin reads nothing of that venue. It
 needs no key and no account: Polymarket US's public market data is open.
 
+It is a data plugin: its first-use path, its two pages and its Summary figures are every data plugin's, described once on [Using a data plugin](https://open-meridian.dev/how-to/using-a-data-plugin/). These sections cover what is Polymarket US's own.
+
 ## Its role
 
 It holds one role, `data`: it records prices, quotes and outcomes into the

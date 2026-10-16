@@ -178,8 +178,9 @@ def serve(reader):
 
 async def main():
     plugin = await meridian.connect(
-        interface=Interface(PORT, "The e2e's reader",
-                            pages=[Page("/", "Rows", levels=["read"], roles=["reporting"])]),
+        # Contract v25: what the stand-in registers is its declaration.
+        declaration=meridian.Declaration(interface=Interface(PORT, "The e2e's reader",
+                            pages=[Page("/", "Rows", levels=["read"], roles=["reporting"])]))
     )  # fmt: skip
     reader = Reader(plugin)
     threading.Thread(target=serve, args=(reader,), daemon=True).start()

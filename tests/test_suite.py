@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import Any
 
 from meridian.plugin.v1 import operations_pb2 as ops
-from meridian.suites import Recorder, names, run, suite
+from meridian.suites import ANSWERED_BY_SDK, Recorder, names, run, suite
 
 import venue_cases as venue
 from conftest import Instruments, held
@@ -160,7 +160,8 @@ def producers(**mutations: Any) -> dict[str, Producer]:
 
 
 def test_every_case_is_mapped_or_said_not_presented_with_why() -> None:
-    assert set(names("data")) == set(producers()) | set(NOT_PRESENTED)
+    # Contract v24: the two cases every suite holds, which the SDK answers.
+    assert set(names("data")) == set(producers()) | set(NOT_PRESENTED) | set(ANSWERED_BY_SDK)
     assert not set(producers()) & set(NOT_PRESENTED)
     assert all(why.strip() for why in NOT_PRESENTED.values())
 

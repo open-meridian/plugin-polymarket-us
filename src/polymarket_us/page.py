@@ -52,7 +52,7 @@ from meridian.v1 import sidecar_pb2
 
 from .convert import ENTITLED as ENTITLED
 from .convert import NAME, VENDOR_NOTE, VENUE
-from .declaration import CATALOGUE
+from .declared import CATALOGUE
 from .dgm import OUTCOMES, PAYOUT_DIFFERS, Dgm
 
 TITLE = NAME

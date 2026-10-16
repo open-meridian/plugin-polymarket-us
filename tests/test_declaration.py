@@ -8,7 +8,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-from polymarket_us.declaration import CATALOGUE, DECLARATION, SAMPLE_DATA
+from polymarket_us.declaration import DECLARATION
+from polymarket_us.declared import CATALOGUE, SAMPLE_DATA
 
 
 def test_a_live_dataset_of_prices_and_quotes_kept_two_days() -> None:

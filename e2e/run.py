@@ -161,7 +161,7 @@ def recorded_contract(directory):
 def run():
     started = time.time()
     contract = recorded_contract(RECORDED[0]) if RECORDED else CONTRACT
-    compose("down", "-v", "--remove-orphans", check=False)
+    compose("--profile", "runner", "down", "-v", "--remove-orphans", check=False)
     compose("up", "-d")
     for instance in (VENUE, "reader"):
         runner("ready", "--instance", instance)
