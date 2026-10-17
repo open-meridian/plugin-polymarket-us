@@ -106,7 +106,15 @@ class Reader:
         one = lambda name: query.get(name, [""])[0]  # noqa: E731
         if one("name") and one("name") not in self.ids:
             named = ops.Identifier(scheme=one("scheme"), value=one("value"), source=one("source"))
-            found = await self.plugin.resolve_identifier(identifiers=[named])
+            # Contract v24 (W3.7): a source thinner than an identifier, a
+            # description and a currency mints nothing, so the custodian
+            # states the contract's description and currency, as its
+            # statement would.
+            found = await self.plugin.resolve_identifier(
+                identifiers=[named],
+                stated_description=one("description"),
+                stated_currency=one("currency"),
+            )
             if not found.instrument_id:
                 raise RuntimeError(f"{one('name')} did not resolve: {found}")
             self.ids[one("name")] = found.instrument_id
