@@ -202,7 +202,7 @@ def test_an_above_below_strike_is_a_floor_inclusive_and_other_terms_none() -> No
     assert convert.bounds(MARKET | {"assetPriceTerms": None}, []) == (None, None)
 
 
-def test_a_bound_that_does_not_read_is_kept_as_sent_and_not_on_the_contract() -> None:
+def test_a_bound_that_does_not_read_is_kept_as_sent_and_one_that_does_is_on_the_contract() -> None:
     (floor, _), unread = _bounds(marketType=convert.ABOVE_BELOW, strike=_usd("74000", "EUR"))
     assert floor is None and [(u.field, u.text) for u in unread] == [
         ("assetPriceTerms.strike.currency", "EUR")
@@ -210,4 +210,7 @@ def test_a_bound_that_does_not_read_is_kept_as_sent_and_not_on_the_contract() ->
     terms = {"marketType": convert.RANGE, "rangeLower": _usd("1"), "rangeUpper": _usd("2")}
     ranged = MARKET | {"assetPriceTerms": terms}
     read = convert.contract(ranged, "raw")
-    assert read.floor is None and read.cap is None, "not yet: 0.31.0's map keeps no bound"
+    assert read.floor is not None and read.cap is not None
+    assert (str(read.floor.value), read.floor.inclusive) == ("1", True)
+    assert (str(read.cap.value), read.cap.inclusive) == ("2", True)
+    assert read.bound_unit == ""

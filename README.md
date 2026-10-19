@@ -14,11 +14,11 @@ key and no account: Polymarket US's public gateway needs none. It never
 trades.
 
 What it does alike with every data plugin of an event-contract venue is the
-SDK's (`meridian.roles.data.event_contracts`, open-meridian 0.31.0), never
+SDK's (`meridian.roles.data.event_contracts`, open-meridian 0.31.1), never
 copied from another plugin: it runs the SDK's data suite and its checks for
 an event-contract venue unchanged against its own conversion.
 
-**Status.** 0.3.0, built on open-meridian 0.31.0 (contract v26, its work the SDK's role helpers; contract v25's whole declaration and docs/, which a deployment shows on its Documentation tab), holding the
+**Status.** 0.3.1, built on open-meridian 0.31.1 (contract v26, a range market's bounds on its contract, its work the SDK's role helpers; contract v25's whole declaration and docs/, which a deployment shows on its Documentation tab), holding the
 role `data`. Not released, uploaded or launched anywhere.
 
 ## What it does
@@ -124,8 +124,9 @@ Two datasets, declared from code in its catalogue (`declaration.py`):
   exclusive is stated only in the authenticated reference data, never on
   the public gateway. So the plugin reports no group. A range market's
   bounds (`assetPriceTerms`: a bucket's `rangeLower` and `rangeUpper`, an
-  above/below market's `strike`) are read in `convert.py` and wait for an
-  SDK that keeps them on the contract (open-meridian 0.31.1).
+  above/below market's `strike`, each inclusive) are on its contract, kept
+  in the contract map; a bound reaches no row in contract v26 (its data
+  path is contract v27's, ruling 464).
 
 ### What it does not serve
 
