@@ -33,7 +33,7 @@ trades, and never calls the authenticated API (api.polymarket.us).
   the synthetic exchanges in `src/polymarket_us/synthetic/`, or a
   developer's recorded ones.
 - **What every data plugin of an event-contract venue does is the SDK's**
-  (open-meridian 0.31.0; nothing is copied between plugins, the product
+  (open-meridian 0.31.1; nothing is copied between plugins, the product
   owner, 2026-10-13): naming each subject, resolving the cash and the venue,
   recording prices, quotes and outcomes, and answering wants and keeping
   them current are `meridian.roles.data.event_contracts.Feed`, over the
@@ -56,8 +56,8 @@ trades, and never calls the authenticated API (api.polymarket.us).
   (Polymarket US: "Do not parse the instrument symbol or slug"). So the
   plugin reports no group (`Feed.report_event` is never called), and the
   suite's two event cases are not presented, with why. `convert.bounds`
-  reads a range market's bounds from `assetPriceTerms`, not yet set on the
-  contract (open-meridian 0.31.0's contract map keeps no bound).
+  reads a range market's bounds from `assetPriceTerms`, set on the
+  contract (open-meridian 0.31.1's contract map keeps them).
 - **The lake's rules, which the SDK's data suite holds** (`tests/test_data_role.py`
   runs it through the SDK's checks): per subject wanted, never the whole venue -- read its record
   (`resolve_instrument`, W3.6) and name Polymarket US's contract by its

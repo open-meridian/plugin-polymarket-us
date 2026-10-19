@@ -66,7 +66,11 @@ tokens, their IDs, its USDC -- is read or named here.
   to the strike". Up/Down (its reference stamped only once its window opens)
   and One-Touch (touched at any moment of its window) state no bound, nor
   does any market without `assetPriceTerms`. Each amount is in dollars, as
-  any other.
+  any other. Both are the contract's own (`Contract.floor`, `.cap`, from
+  0.3.1 on open-meridian 0.31.1, whose contract map keeps them);
+  `bound_unit` is left empty: a bound here is a price, whose unit is an
+  instrument's ID the conversion does not hold. A bound reaches no row in
+  contract v26; its data path is contract v27's (ruling 464).
 - **Events are not reported** (contract v26, W3.29). Polymarket US groups
   its markets into events -- `/v1/events/slug/{slug}`, its `markets` nested,
   its `seriesSlug` its series ("Events API Overview"; "Events & Markets") --
@@ -254,10 +258,7 @@ def contract(
     binary = len(sides) == 2 and len(long) == 1 and len(short) == 1
     for side in sides:
         dollars(side.get("quote"), "marketSides.quote", unread)
-    # Read, but not yet on the contract: open-meridian 0.31.0's contract map
-    # cannot keep a bound (its save writes the Decimal as is), and sends a
-    # bound on no row; set `floor` and `cap` below once an SDK keeps them.
-    bounds(body, unread)
+    floor, cap = bounds(body, unread)
     status = _text(body.get("status"))
     if status in ("", "MARKET_STATUS_UNSPECIFIED"):
         tradable = body.get("active") is True and body.get("closed") is not True
@@ -280,6 +281,8 @@ def contract(
         unread=tuple(unread),
         resolution=outcome,
         read_at_ns=received_ns,
+        floor=floor,
+        cap=cap,
     )
 
 

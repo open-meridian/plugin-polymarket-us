@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.3.1
+
+On open-meridian 0.31.1: a range market's bounds on its contract (the gaps
+spec's A4).
+
+- **Bounds on the contract.** `convert.contract` sets `Contract.floor` and
+  `.cap` from the market's `assetPriceTerms` -- a range bucket's
+  `rangeLower` and `rangeUpper`, each inclusive, a tail's open side none;
+  an above/below market's `strike`, an inclusive floor -- which 0.3.0 read
+  but held off it: 0.31.1's contract map keeps a bound and reads it back.
+  `bound_unit` stays empty (a bound here is a price, whose unit is an
+  instrument's ID). A bound reaches no row in contract v26; its data path
+  is contract v27's (ruling 464).
+- **The SDK's check restored.** 0.31.1's
+  `test_a_record_already_complete_is_not_resolved_again` holds ruling 312's
+  ticker itself, so this plugin's override is gone.
+- **The pins**: open-meridian 0.31.1 and plugin-python:0.31.1 by tag and
+  digest (`sha256:67781f14...a3535b39`); core v26's runtime and harness and
+  `meridian` 0.1.49 as 0.3.0 set them.
+
 ## 0.3.0
 
 On open-meridian 0.31.0, contract v26: the data role's work is the SDK's
