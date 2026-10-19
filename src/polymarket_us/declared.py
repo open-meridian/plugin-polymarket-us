@@ -27,15 +27,16 @@ on the Data sources page, which replaces it.
 
 `venue_id` is empty: the venue master's ID for Polymarket US is minted by
 the platform, not known to the code a catalogue is declared from, so each
-row names the venue by the ID it resolves at run time (dgm.py), by its
-ISO 10383 MIC, `QCEX`.
+row names the venue by the ID it resolves at run time (the SDK's
+`meridian.roles.data.event_contracts.Feed`), by its ISO 10383 MIC, `QCEX`.
 
 **Its storage**: one kind of raw record, Polymarket US's responses as
-received, kept a month by default (raw.py); the SDK declares the kind's two
-window settings. **Its settings**: sample data, a developer's
-(synthetic.py). No secret: Polymarket US's public market data needs no key,
-and this version reads nothing that does (its market WebSocket needs an
-account's API key, so it polls instead).
+received, kept a month by default (`KIND`, kept by the SDK's
+`meridian.edge.RawStore`); the SDK declares the kind's two window settings.
+**Its settings**: sample data, a developer's (synthetic.py). No secret:
+Polymarket US's public market data needs no key, and this version reads
+nothing that does (its market WebSocket needs an account's API key, so it
+polls instead).
 """
 
 import meridian
@@ -43,6 +44,13 @@ from meridian import DatasetDeclaration, DatasetLicence
 
 VENDOR = "Polymarket US"
 SAMPLE_DATA = "sample_data"
+
+#: Its one kind of raw record, Polymarket US's responses as received: a month
+#: of them by default, enough to re-convert a row a person questions. An admin
+#: sets the window in Settings.
+KIND = "responses"
+LABEL = "Raw responses"
+WINDOW_DAYS = 30
 
 #: Its settings, in the data role's order (spec/plugin-pages-follow-their-role):
 #: no environment and no credential -- Polymarket US's public market data has

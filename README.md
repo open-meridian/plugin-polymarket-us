@@ -13,7 +13,12 @@ the contract's outcome, every figure exactly as Polymarket US stated it. No
 key and no account: Polymarket US's public gateway needs none. It never
 trades.
 
-**Status.** 0.2.0, built on open-meridian 0.29.0 (contract v25: its whole declaration, and docs/, which a deployment shows on its Documentation tab), holding the
+What it does alike with every data plugin of an event-contract venue is the
+SDK's (`meridian.roles.data.event_contracts`, open-meridian 0.31.0), never
+copied from another plugin: it runs the SDK's data suite and its checks for
+an event-contract venue unchanged against its own conversion.
+
+**Status.** 0.3.0, built on open-meridian 0.31.0 (contract v26, its work the SDK's role helpers; contract v25's whole declaration and docs/, which a deployment shows on its Documentation tab), holding the
 role `data`. Not released, uploaded or launched anywhere.
 
 ## What it does
@@ -101,9 +106,26 @@ Two datasets, declared from code in its catalogue (`declaration.py`):
   claims nothing about Polymarket US's terms, which are for the deployment
   admin and whoever uses the deployment to settle.
 - **The venue** is named by its MIC, `QCEX` (as Kalshi's plugin names
-  Kalshi by `KLSH`). Where the deployment's venue master does not hold it,
-  each row has the venue left empty and the code beside it as reported, and
-  the miss is reported, asked again the next day.
+  Kalshi by `KLSH`), and from contract v26 each contract is sent with its
+  ticker -- its slug under the `ticker` scheme, `QCEX` in source -- beside
+  its symbol, which the platform matches and mints on (ruling 312). Where
+  the deployment's venue master does not hold the venue, each row has the
+  venue left empty and the code beside it as reported, and the miss is
+  reported, asked again the next day.
+- **No event groups** (contract v26; meridian-design
+  `spec/the-contract-gaps-v26-and-v27-close.md`, W3.29). Polymarket US
+  groups its markets into events (`/v1/events/slug/{slug}`, its markets
+  nested, its `seriesSlug` its series; docs.polymarket.us, "Events API
+  Overview"), but a market's own answer names no event, and no public read
+  answers the event of a market: finding it would mean reading the venue's
+  whole event list, which the plugin never reads, or parsing the market's
+  slug, which Polymarket US says not to do ("Crypto Schema"). Its event
+  answer states no flag either: whether an event's markets are mutually
+  exclusive is stated only in the authenticated reference data, never on
+  the public gateway. So the plugin reports no group. A range market's
+  bounds (`assetPriceTerms`: a bucket's `rangeLower` and `rangeUpper`, an
+  above/below market's `strike`) are read in `convert.py` and wait for an
+  SDK that keeps them on the contract (open-meridian 0.31.1).
 
 ### What it does not serve
 
@@ -115,10 +137,14 @@ calendar or date (an event contract settles on its outcome), and a restart's
 gap of trades. `restates-a-disputed-outcome` (`about: disputed outcomes`) is
 not presented either: Polymarket US publishes an outcome only once its
 final settlement is published, and states no dispute, so no outcome is
-recorded before the final one to be restated. Every other case passes:
+recorded before the final one to be restated. Contract v26's
+`reports-an-event-group` and `reports-a-flag-the-venue-does-not-state` are
+not presented: it reports no group, as above. Every other case passes:
 `records-an-outcome` at the final stage (the case takes determined or
 final), `records-a-partial-payout` on a settlement price between nothing
-and the payout, and `reads-its-datasets-licences` among them.
+and the payout, `reads-its-datasets-licences` and
+`queries-the-lake-within-bounds` (the SDK's producer) among them;
+`hears-and-reads-an-event-group` is answered by the SDK.
 
 ## Settings
 
@@ -133,9 +159,10 @@ No secret: Polymarket US's public market data needs no key.
 
 The data role's two pages (meridian-design
 `spec/plugin-pages-follow-their-role.md`), the same sections, rows, labels
-and "not set up yet" states as every data plugin's, drawn from the SDK's
-role templates (`meridian.roles.data`); Polymarket US's nuance only at their
-extension points. A data plugin shows no market data: viewing prices is for
+and "not set up yet" states as every data plugin's, drawn by the SDK's
+templates for an event-contract venue
+(`meridian/roles/data/event_contracts/`); Polymarket US's names and words
+only where they ask for them. A data plugin shows no market data: viewing prices is for
 the reading roles.
 
 - **Connection**: "Key" -- the mode (Live, or Sample data), "No key needed",
@@ -174,7 +201,7 @@ level. The plugin has no route that changes anything.
 Every answer Polymarket US sends, an error as much as a book, is kept in
 the storage the deployment grants the plugin before anything is read from
 it, with the request that asked for it, its status and headers, and when it
-arrived (`raw.py`); a live answer is a line of its day's file, added only
+arrived (`meridian.edge.RawStore`); a live answer is a line of its day's file, added only
 when it changed, and a row read from an unchanged answer names the line and
 time it first arrived. Each row names its raw record (`RawRecordRef`); an
 outcome names its settlement answer. Kept in units of a UTC day under
@@ -189,10 +216,15 @@ reader (`e2e/reader.py`, holding `custody` to name a custodian's records,
 `reporting` to read prices and `signal` to read quotes): the catalogue
 listed, nothing asked of Polymarket US before a want, a custodian's
 contract read and named, its prices and quote recorded in dollars, read and
-heard, a market of three sides declined, a settled market's outcome
+heard, no event group reported, a market of three sides declined, a settled market's outcome
 recorded unasked, final, and read back, both read tools answering what the
 pages show, and `store lake` numbering each row with no holes (`e2e/run.py`
-says each step).
+says each step). On core v26's harness (17a13a2) the custodian states the
+contract's ticker under `QCEX` beside its own symbol (ruling 199); the
+stand-in platform mints an event contract by its ticker only for a venue
+its venue master holds, and it does not hold `QCEX`, so the custodian's
+records stay provisional and the run proves what that harness can
+(`HARNESS_HOLDS_NO_QCEX`) until it does.
 
     docker run --rm --entrypoint python -v "$PWD/e2e":/e2e:ro \
         -v "$PWD/recordings":/recordings polymarket-us:local /e2e/record.py SLUG ...
@@ -205,7 +237,7 @@ shape rather than to the synthetic values.
 
 ## Working on it
 
-    make ci-local        # every gate: lint, tests, plugin check, the image and e2e
+    make ci-local        # every gate: lint, tests, plugin check, the image, e2e
     make test            # the tests, the SDK's data suite among them
     make preview         # preview/: each page on synthetic data, linking the kit
     make install-hooks   # a push to main runs ci-local first; a branch push runs nothing (CI-first)

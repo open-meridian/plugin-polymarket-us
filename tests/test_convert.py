@@ -8,8 +8,9 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
+from meridian.roles.data.event_contracts import FINAL, Contract
+
 from polymarket_us import convert
-from polymarket_us.market import FINAL, Contract
 from polymarket_us.venue import Fetched
 
 import venue_cases as venue
@@ -166,3 +167,47 @@ def test_a_resolved_market_is_asked_its_settlement_and_no_other() -> None:
     assert pending is not None and pending.resolution is None and not pending.tradable
     asked = venue.calls(market)
     assert sum("/settlement" in url for url in asked) == 2, asked
+
+
+# ── Contract v26: a range market's bounds ───────────────────────────────────
+
+
+def _bounds(**terms: Any) -> Any:
+    unread: list[Any] = []
+    return convert.bounds({"assetPriceTerms": terms}, unread), unread
+
+
+def test_a_range_buckets_bounds_are_inclusive_and_a_tail_has_one() -> None:
+    (floor, cap), _ = _bounds(marketType=convert.RANGE, rangeKind="ASSET_PRICE_RANGE_KIND_INTERIOR",
+                              rangeLower=_usd("74000.00"), rangeUpper=_usd("74499.99"))  # fmt: skip
+    assert (str(floor.value), floor.inclusive, str(cap.value), cap.inclusive) == (
+        "74000.00", True, "74499.99", True,
+    )  # fmt: skip
+    (floor, cap), _ = _bounds(marketType=convert.RANGE, rangeKind="ASSET_PRICE_RANGE_KIND_BELOW",
+                              rangeLower=None, rangeUpper=_usd("73999.99"))  # fmt: skip
+    assert floor is None and str(cap.value) == "73999.99" and cap.inclusive
+    (floor, cap), _ = _bounds(marketType=convert.RANGE, rangeKind="ASSET_PRICE_RANGE_KIND_ABOVE",
+                              rangeLower=_usd("76000.00"), rangeUpper=None)  # fmt: skip
+    assert str(floor.value) == "76000.00" and floor.inclusive and cap is None
+
+
+def test_an_above_below_strike_is_a_floor_inclusive_and_other_terms_none() -> None:
+    (floor, cap), _ = _bounds(marketType=convert.ABOVE_BELOW, strike=_usd("74000"))
+    assert (str(floor.value), floor.inclusive, cap) == ("74000", True, None)
+    up_down = _bounds(marketType="ASSET_PRICE_MARKET_TYPE_UP_DOWN", priceToBeat=_usd("81650.14"))
+    assert up_down[0] == (None, None)
+    touch = _bounds(marketType="ASSET_PRICE_MARKET_TYPE_ONE_TOUCH", strike=_usd("90000"))
+    assert touch[0] == (None, None)
+    assert convert.bounds(MARKET, []) == (None, None), "a market without terms states none"
+    assert convert.bounds(MARKET | {"assetPriceTerms": None}, []) == (None, None)
+
+
+def test_a_bound_that_does_not_read_is_kept_as_sent_and_not_on_the_contract() -> None:
+    (floor, _), unread = _bounds(marketType=convert.ABOVE_BELOW, strike=_usd("74000", "EUR"))
+    assert floor is None and [(u.field, u.text) for u in unread] == [
+        ("assetPriceTerms.strike.currency", "EUR")
+    ]
+    terms = {"marketType": convert.RANGE, "rangeLower": _usd("1"), "rangeUpper": _usd("2")}
+    ranged = MARKET | {"assetPriceTerms": terms}
+    read = convert.contract(ranged, "raw")
+    assert read.floor is None and read.cap is None, "not yet: 0.31.0's map keeps no bound"

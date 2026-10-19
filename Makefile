@@ -19,11 +19,12 @@ IMAGE       ?= $(PLUGIN):local
 # meridian-python checkout carries exactly that version -- one not yet
 # published, being tried -- it is built from there (SDK_REPO): the tests' and
 # the check's containers install it from source, and the plugin's image is
-# built on a base made from it. Otherwise both come from PyPI and ghcr.io.
+# built on a base made from it. Otherwise both come from PyPI and ghcr.io,
+# the base as the Dockerfile names it, by digest: what an upload builds on.
 SDK_VERSION := $(shell sed -n 's/.*"open-meridian==\([0-9][0-9.]*\)".*/\1/p' pyproject.toml)
 SDK_REPO    ?= $(if $(shell grep -s '^version = "$(SDK_VERSION)"$$' ../meridian-python/pyproject.toml),../meridian-python,)
 SDK_CONTEXT := $(if $(SDK_REPO),--build-context sdk=$(SDK_REPO),)
-BASE        ?= $(if $(SDK_REPO),plugin-python:$(SDK_VERSION)-local,ghcr.io/open-meridian/plugin-python:$(SDK_VERSION))
+BASE        ?= $(if $(SDK_REPO),plugin-python:$(SDK_VERSION)-local,$(shell sed -n 's/^ARG BASE=//p' Dockerfile))
 PLUGIN_CHECK := meridian-$(PLUGIN)-plugin-check
 # The meridian check.yaml holds the plugin to, read from there so the two
 # cannot drift.
@@ -40,9 +41,9 @@ CLI_CONTEXT := $(if $(MERIDIAN_BIN),--build-context cli=$(MERIDIAN_BIN),)
 # contract version changes.
 # `make e2e RUNTIME_IMAGE=...:latest HARNESS_IMAGE=...:latest` tries a newer
 # core; e2e-latest.yaml does that weekly.
-# Core abf028f (merged as fc3f0d1), contract v25, as published with chart 0.1.306.
-RUNTIME_IMAGE ?= ghcr.io/open-meridian/meridian-runtime:abf028f@sha256:67c765c3c8234d942fa18b95a2d18cbc96358853ed27a730a2f057a15625d3c9
-HARNESS_IMAGE ?= ghcr.io/open-meridian/meridian-harness:abf028f@sha256:bdc4325691084e2cbc5e4ba4c01bb9e3ea45be5264fb081682b1c48f1864b1e8
+# Core 17a13a2 (merged as 648e25f), contract v26, as published with chart 0.1.308.
+RUNTIME_IMAGE ?= ghcr.io/open-meridian/meridian-runtime:17a13a2@sha256:09a7daf0b48ed40a047749479513079ee23a9624aa4416f2baacf0460f7b47ac
+HARNESS_IMAGE ?= ghcr.io/open-meridian/meridian-harness:17a13a2@sha256:a4b2ed2ed7d26947d1af5c3a00749f5227811b81eddbd48f0c010443fa057d6b
 # Its roles as pyproject.toml declares them (a JSON list's items), so the
 # harness launches it as `meridian plugin upload` would; and the e2e's reader
 # (e2e/reader.py) beside it, holding `custody` to name a custodian's records,
@@ -64,7 +65,7 @@ E2E := docker compose -p $(PLUGIN)-e2e -f .e2e/harness/compose.yaml \
        -f .e2e/harness/plugins.yaml -f e2e/plugin.yaml
 
 help:
-	@echo "  make ci-local       every gate: lint, tests, plugin check, the image and e2e"
+	@echo "  make ci-local       every gate: lint, tests, plugin check, the image, e2e"
 	@echo "  make ci-remote      what ci.yaml runs: lint and tests"
 	@echo "  make test           the tests, in a container: the SDK's data suite among them"
 	@echo "  make lint           ruff and mypy, strict"

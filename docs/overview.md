@@ -75,6 +75,14 @@ determination or payout, so an outcome is valid from when the answer stating
 it arrived. Paying holders is not the lake's: until the book's servicing
 records payouts, a custodian's payout shows as a break.
 
+## Events
+
+Polymarket US groups its markets into events (a game, an election), but it
+does not say, on a market, which event the market belongs to. So the plugin
+reports no event groups: your deployment holds no group for a Polymarket US
+contract, and each contract is priced on its own. Polymarket US's public
+data does not state whether an event's markets exclude one another either.
+
 ## What it never makes up
 
 - A figure is recorded exactly as Polymarket US stated it, never rounded and

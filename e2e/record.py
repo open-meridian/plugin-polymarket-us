@@ -14,7 +14,7 @@ never committed; the plan's Q11):
 
 Each market, its book twice a second apart, and its settlement are asked; a
 market Polymarket US knows nothing by, or states no settlement of, is kept
-as its answer. Standard library and the plugin only.
+as its answer. Standard library, the SDK and the plugin only.
 """
 
 import sys
@@ -22,7 +22,8 @@ import time
 from datetime import UTC, datetime
 from pathlib import Path
 
-from polymarket_us.raw import RawStore
+from meridian.edge import RawStore
+
 from polymarket_us.venue import Polymarket, VenueError
 
 

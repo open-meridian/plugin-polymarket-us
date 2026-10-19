@@ -3,7 +3,7 @@
 A Meridian plugin, in Python on the open-meridian SDK, that puts Polymarket
 US's public market data for its event contracts, and their outcomes, into a
 deployment's lake, converted at the edge: a data plugin (the role `data`;
-W10, contracts v19, v20 and v23). Polymarket US is QCX LLC, a CFTC-designated
+W10, contracts v19 to v26). Polymarket US is QCX LLC, a CFTC-designated
 contract market (ISO 10383 `QCEX`), not the international Polymarket, whose
 plugin is plugin-polymarket. It runs beside a sidecar in a Meridian
 deployment and reaches nothing else but that sidecar and Polymarket US's
@@ -20,9 +20,9 @@ trades, and never calls the authenticated API (api.polymarket.us).
   needs an account's key, which this version never holds.
 - **Polymarket US's vocabulary is read in one place.** `venue.py` is the
   HTTP client (the standard library's: no third-party dependency), every
-  answer kept as a raw record before anything is read from it (`raw.py`);
-  `convert.py` reads Polymarket US's answers into the venue's values
-  (`market.py`): a market, by its slug, as one binary event contract -- its
+  answer kept as a raw record before anything is read from it
+  (`meridian.edge.RawStore`); `convert.py` reads Polymarket US's answers into
+  the venue's values (`meridian.roles.data.event_contracts`'s): a market, by its slug, as one binary event contract -- its
   one instrument, the YES side, paying one dollar; its NO side the same
   instrument held short -- served only where its `marketSides` are one long
   and one short side; its `/book` as the best bid and offer with their
@@ -32,18 +32,34 @@ trades, and never calls the authenticated API (api.polymarket.us).
   sent. `synthetic.py` answers instead of Polymarket US with sample data:
   the synthetic exchanges in `src/polymarket_us/synthetic/`, or a
   developer's recorded ones.
-- **Everything from there to the lake is this plugin's own**: `market.py`,
-  `dgm.py`, `contracts.py`, `raw.py`, `page.py` and its two templates, and
-  the tests `test_suite.py`, `test_dgm.py`, `test_page.py`, `test_raw.py`
-  and `conftest.py`, with `e2e/reader.py`. They began as plugin-kalshi's
-  code, and are no longer compared with any sibling's (the product owner,
-  2026-10-13: plugins do not share code by copying; the role's common logic
-  moves into the SDK). Polymarket US's vocabulary stays in `convert.py`,
-  `venue.py`, `synthetic.py`, `declaration.py`, `__main__.py`, `preview.py`,
-  and `tests/venue_cases.py`, the one test module that knows which venue
-  this is.
-- **The lake's rules, which the SDK's data suite holds** (`tests/test_suite.py`
-  runs it): per subject wanted, never the whole venue -- read its record
+- **What every data plugin of an event-contract venue does is the SDK's**
+  (open-meridian 0.31.0; nothing is copied between plugins, the product
+  owner, 2026-10-13): naming each subject, resolving the cash and the venue,
+  recording prices, quotes and outcomes, and answering wants and keeping
+  them current are `meridian.roles.data.event_contracts.Feed`, over the
+  venue's values (`event_contracts.Cash`, `Contract`, `Resolution`, `Tick`,
+  `Top`) and its contract map (`event_contracts.ContractMap`, kept in
+  storage); raw records are `meridian.edge.RawStore`; the pages are the
+  SDK's for an event-contract venue (`page.py` builds them with
+  `event_contracts.connection_read` and `datasets_read`); and
+  `tests/test_data_role.py` runs the SDK's checks
+  (`meridian.roles.data.testing.EventContractsChecks`) against this plugin's
+  conversion. What is Polymarket US's own is here: `convert.py`
+  (`PolymarketUsMarket`), `venue.py`, `synthetic.py`, `declared.py`,
+  `declaration.py`, `__main__.py`, `preview.py`, `e2e/reader.py` (its e2e's
+  stand-in), and `tests/venue_cases.py`, the one test module that knows
+  which venue this is.
+- **No event groups** (contract v26, W3.29). Polymarket US groups markets
+  into events (`/v1/events/slug/{slug}`), but a market's answer names no
+  event and no public read answers a market's event; never read the
+  venue's event list to find one, and never parse a market's slug for it
+  (Polymarket US: "Do not parse the instrument symbol or slug"). So the
+  plugin reports no group (`Feed.report_event` is never called), and the
+  suite's two event cases are not presented, with why. `convert.bounds`
+  reads a range market's bounds from `assetPriceTerms`, not yet set on the
+  contract (open-meridian 0.31.0's contract map keeps no bound).
+- **The lake's rules, which the SDK's data suite holds** (`tests/test_data_role.py`
+  runs it through the SDK's checks): per subject wanted, never the whole venue -- read its record
   (`resolve_instrument`, W3.6) and name Polymarket US's contract by its
   identifiers (the market's slug as a `symbol` whose source is
   `polymarket-us`, else another source's symbol that Polymarket US answers
@@ -52,7 +68,9 @@ trades, and never calls the authenticated API (api.polymarket.us).
   the record states no other payout; join the slug to the record, with the
   class, the type and Polymarket US's words offered, where it lacks any of
   them; resolve the dollar once (ISO 4217 `USD`), and the venue by its MIC
-  (`iso10383` `QCEX`), and where the deployment does not hold it leave each
+  (`iso10383` `QCEX`), each contract sent with its ticker under `QCEX`
+  beside its symbol (ruling 312), and where the deployment does not hold the
+  venue leave each
   row's `venue_id` empty with the code beside it as reported. A price is
   money per contract in dollars (`Money(amount, "USD")`), never a
   probability, and one outside nothing to the payout is not recorded. A
@@ -61,15 +79,15 @@ trades, and never calls the authenticated API (api.polymarket.us).
   (`not_covered`, `beyond_history`, `source_silent`). A case of the suite
   about a kind of data the plugin never publishes (its `about`: closes,
   bars, trades, a currency's rate, a security's price, a stablecoin, a
-  settlement calendar or date, disputed outcomes) is named in
+  settlement calendar or date, disputed outcomes, event groups) is named in
   `not_presented` with why (`tests/venue_cases.py`); every other case is
   mapped.
-- **Outcomes** (contract v23, the lake plan's "vL1c"): `dgm.record_outcomes`
+- **Outcomes** (contract v23, the lake plan's "vL1c"): `Feed.record_outcomes`
   records each served contract's outcome in the `outcomes` dataset,
   unasked, from the contract's own side (`pays`, `pays_nothing`,
   `pays_part`, by its settlement value against its payout), the venue's
   word kept as reported (`polymarket-us:settlement`), one row key per
-  contract (`<slug>:outcome`). `convert.PolymarketMarket.contract` asks
+  contract (`<slug>:outcome`). `convert.PolymarketUsMarket.contract` asks
   `/settlement` only once the market's `status` is `MARKET_STATUS_RESOLVED`
   ("final settlement published"), so the stage is always final:
   `MARKET_STATUS_RESOLVING` states no outcome, and Polymarket US publishes
@@ -80,22 +98,24 @@ trades, and never calls the authenticated API (api.polymarket.us).
   record. No business date; no `want_id`.
 - **A data plugin shows no market data** (ruled 2026-10-03). Its pages are
   the data role's (meridian-design `spec/plugin-pages-follow-their-role.md`):
-  Connection and Datasets, under Manage alone, extending the SDK's role
-  templates (`meridian/roles/data/connection.html`, `datasets.html`) with
-  records extending `meridian.roles.data.ConnectionRead` and `DatasetsRead`.
+  Connection and Datasets, under Manage alone, drawn by the SDK's templates
+  for an event-contract venue
+  (`meridian/roles/data/event_contracts/connection.html`, `datasets.html`,
+  extending the role's) from `event_contracts.ConnectionRead` and
+  `event_contracts.DatasetsRead`.
   Their sections, rows, labels and "not set up yet" states are the role's
   and are never renamed, reordered or dropped; the venue's nuance goes only
   at the template's blocks: the venue master's ID under "Key", and a section
   under the venue's name with the contract map, the cash and payouts, and
   how the venue's sides make a contract (`convert.VENDOR_NOTE`). Never a
-  price, side or size (`tests/test_page.py` holds every page to it). Each
+  price, side or size (the SDK's checks hold every page to it). Each
   page declares the record it renders (`answers=`), so each is a read tool
   on the deployment's MCP surface, `read_connection` and `read_datasets`,
   answering what the page shows under the role's field names; keep the two
   in step. Both fit one screen at 1440x900 and 390x844 (one-line rows; the
   wants searched and paged by the kit's `om-pager`). The Summary's figures
   are the role's (`page.figures_now`), sent on the heartbeat each minute.
-- **Its licences** (contract v20): `dgm.read_licences` reads whether a
+- **Its licences** (contract v20): `Feed.read_licences` reads whether a
   deployment admin has licensed its datasets (`list_datasets`), on start and
   each minute. It records no trades, so it has no restart's gap to read
   back; the suite's case for it is not presented, with why.
@@ -114,7 +134,7 @@ trades, and never calls the authenticated API (api.polymarket.us).
 - Manage opens on the plugin's Summary, which core draws, with its raw
   records per kind. Build no summary page of your own.
 - **A plugin at the edge keeps its raw records in its own storage and moves
-  them past their window through the SDK** (`raw.tend`: a day's unit of
+  them past their window through the SDK** (`RawStore.tend`: a day's unit of
   `responses`, archived, kept or deleted as `responses_past_window` says,
   never by deleting files), and says what storage holds (`plugin.stored`).
   Declare no window setting of your own: the SDK declares
@@ -149,7 +169,7 @@ came in `meridian` 0.1.15; with an older one, the person runs
 - **`meridian plugin check --run-tests`** also runs the tests under `tests/`
   with pytest, in the plugin's `.venv` if it has one, otherwise with the
   `python3` on the PATH, which needs the plugin and pytest installed
-  (`pip install -e . pytest`). `tests/test_page.py` asks the pages under
+  (`pip install -e . pytest`). `tests/test_data_role.py` asks the pages under
   Manage, Open and View with `meridian.testing.PageClient`, and the operation
   they send against a stand-in for the sidecar; replace its tests as you
   replace the pages, and add one for each page and each operation.
