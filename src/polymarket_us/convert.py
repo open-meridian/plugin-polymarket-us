@@ -1,5 +1,6 @@
-"""Polymarket US's answers, read into the venue's values (market.py): the one
-place Polymarket US's vocabulary is read.
+"""Polymarket US's answers, read into the venue's values (the SDK's
+`meridian.roles.data.event_contracts`): the one place Polymarket US's
+vocabulary is read.
 
 Polymarket US is QCX LLC, a CFTC-designated contract market, not the
 international on-chain market: its own markets, identifiers and dollars
@@ -49,12 +50,32 @@ tokens, their IDs, its USDC -- is read or named here.
   and Polymarket US publishes no proposed, determined or disputed outcome
   before the final one ("All resolutions are final", per its rulebook), so
   nothing is recorded before it. Polymarket US's word is the settlement
-  price as it states it (`polymarket:settlement`): 1 pays, 0 pays nothing,
+  price as it states it (`polymarket-us:settlement`): 1 pays, 0 pays nothing,
   and a price between -- an instrument that "may settle at last fair market
   prices" under its market's rules -- pays part. It states no time of
   determination or payout, so the outcome is valid from when the answer
   first stating it arrived, and its payout time stays unset; the outcome's
   raw record is the settlement answer.
+- **A range market's bounds** (contract v26; the gaps spec's A4) are its
+  `assetPriceTerms` (docs.polymarket.us, "Markets API Overview: Crypto Price
+  Market Fields", and "Crypto Schema"): a `ASSET_PRICE_MARKET_TYPE_RANGE`
+  bucket's `rangeLower` and `rangeUpper`, each inclusive, the open side of a
+  tail (`rangeKind` `_BELOW` or `_ABOVE`) null; an
+  `ASSET_PRICE_MARKET_TYPE_ABOVE_BELOW` market's `strike`, a floor inclusive
+  -- its long side "pays when the settlement value is greater than or equal
+  to the strike". Up/Down (its reference stamped only once its window opens)
+  and One-Touch (touched at any moment of its window) state no bound, nor
+  does any market without `assetPriceTerms`. Each amount is in dollars, as
+  any other.
+- **Events are not reported** (contract v26, W3.29). Polymarket US groups
+  its markets into events -- `/v1/events/slug/{slug}`, its `markets` nested,
+  its `seriesSlug` its series ("Events API Overview"; "Events & Markets") --
+  but states neither flag on an event, and a market's own answer names no
+  event: no public read answers the event of a market. Finding it would mean
+  reading the venue's whole event list, which the plugin never reads, or
+  parsing the market's slug, which Polymarket US says not to do ("Do not
+  parse the instrument symbol or slug", "Crypto Schema"). So no event is
+  read and no group reported; the data suite's two cases are not presented.
 """
 
 from __future__ import annotations
@@ -66,20 +87,17 @@ from dataclasses import dataclass
 from decimal import Decimal
 from typing import Any
 
-from .market import (
+from meridian.roles.data import NANOS_PER_SECOND, Endpoint, Limits, Session, Unread, number
+from meridian.roles.data.event_contracts import (
     FINAL,
-    NANOS_PER_SECOND,
+    Bound,
     Cash,
     Contract,
-    Endpoint,
-    Limits,
     Resolution,
-    Session,
     Tick,
     Top,
-    Unread,
-    number,
 )
+
 from .venue import BURST, GATEWAY, NOT_FOUND, RATE_PER_SECOND, Fetched, Polymarket, VenueError
 
 VENUE = "polymarket-us"
@@ -192,6 +210,33 @@ def resolution(body: Mapping[str, Any]) -> Resolution:
     )
 
 
+#: The market families whose terms state a bound, as `assetPriceTerms`
+#: names them.
+RANGE = "ASSET_PRICE_MARKET_TYPE_RANGE"
+ABOVE_BELOW = "ASSET_PRICE_MARKET_TYPE_ABOVE_BELOW"
+
+
+def bounds(body: Mapping[str, Any], unread: list[Unread]) -> tuple[Bound | None, Bound | None]:
+    """A range market's floor and cap as its `assetPriceTerms` state them,
+    each inclusive; neither for a market whose terms state no bound."""
+    terms = body.get("assetPriceTerms")
+    if not isinstance(terms, Mapping):
+        return None, None
+    kind = _text(terms.get("marketType"))
+    field = "assetPriceTerms"
+    if kind == RANGE:
+        floor = dollars(terms.get("rangeLower"), f"{field}.rangeLower", unread)
+        cap = dollars(terms.get("rangeUpper"), f"{field}.rangeUpper", unread)
+        return (
+            Bound(floor, True) if floor is not None else None,
+            Bound(cap, True) if cap is not None else None,
+        )
+    if kind == ABOVE_BELOW:
+        strike = dollars(terms.get("strike"), f"{field}.strike", unread)
+        return (Bound(strike, True) if strike is not None else None), None
+    return None, None
+
+
 def contract(
     body: Mapping[str, Any],
     raw_key: str,
@@ -209,6 +254,10 @@ def contract(
     binary = len(sides) == 2 and len(long) == 1 and len(short) == 1
     for side in sides:
         dollars(side.get("quote"), "marketSides.quote", unread)
+    # Read, but not yet on the contract: open-meridian 0.31.0's contract map
+    # cannot keep a bound (its save writes the Decimal as is), and sends a
+    # bound on no row; set `floor` and `cap` below once an SDK keeps them.
+    bounds(body, unread)
     status = _text(body.get("status"))
     if status in ("", "MARKET_STATUS_UNSPECIFIED"):
         tradable = body.get("active") is True and body.get("closed") is not True
@@ -307,7 +356,7 @@ class _Book:
     at_ns: int
 
 
-class PolymarketMarket:
+class PolymarketUsMarket:
     """Polymarket US's market data, as the shared data plugin's work asks for
     it."""
 

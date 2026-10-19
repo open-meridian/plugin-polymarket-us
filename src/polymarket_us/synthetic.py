@@ -75,7 +75,7 @@ class Synthetic:
 
 
 class Recorded:
-    """Answers from a developer's recorded raw records (raw.py's files under a
+    """Answers from a developer's recorded raw records (`meridian.edge.RawStore`'s files under a
     `responses/` directory): the latest answer kept for each call and slug,
     a 404 among them."""
 

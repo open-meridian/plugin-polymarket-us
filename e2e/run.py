@@ -1,5 +1,5 @@
 """`make e2e` and `make e2e-recorded`: the plugin end to end on core's plugin
-harness (contracts v19, v20 and v23), with sample data, beside a reader
+harness (contracts v19 to v26), with sample data, beside a reader
 (e2e/reader.py).
 
 1. Launched: the plugin registers its catalogue; the deployment admin's tool
@@ -9,8 +9,15 @@ harness (contracts v19, v20 and v23), with sample data, beside a reader
 2. Sample data on: nothing is asked of Polymarket US and no record minted
    until the lake wants something -- never the venue's list. The reader then
    names a market as a custodian's book holds it, by the custodian's own
-   symbol, a market of three sides the same way, a market Polymarket US has
-   settled, and the dollar by ISO 4217.
+   symbol and, from contract v26, Polymarket US's ticker under its MIC
+   (QCEX) beside it, as a broker reports the exchange's symbol (rulings 199,
+   204), a market of three sides the same way, a market Polymarket US has
+   settled, and the dollar by ISO 4217. Core v26's stand-in platform mints
+   an event contract by its ticker only for a venue its venue master holds,
+   and it holds Kalshi and the international Polymarket, not QCEX: until it
+   does, the custodian's record stays the deployment's provisional one,
+   which the lake does not price, and the run stops after step 3 at what
+   the harness can prove (`HARNESS_HOLDS_NO_QCEX`).
 3. Licensed and entitled: the admin sets each dataset's licence as its
    default says -- `live` kept two days, `outcomes` kept -- and entitles the
    reader to both.
@@ -23,6 +30,9 @@ harness (contracts v19, v20 and v23), with sample data, beside a reader
    its raw record and the venue as reported.
 5. Quotes wanted and recorded: the reader reads its latest quote; the
    plugin records its best bid and offer with their sizes, read and heard.
+5a. No event (contract v26): Polymarket US's market answer names no event,
+   so the plugin reports no group, and the reader reads none by the
+   contract (W3.30).
 6. Declined: the market of three sides is declined as not covered.
 6a. An outcome (contract v23): the reader asks for the settled market's
    price; the plugin names it and records its outcome, unasked, in
@@ -58,6 +68,14 @@ import urllib.parse
 from decimal import Decimal
 
 VENUE = "polymarket-us"
+#: Core v26's stand-in platform (core 17a13a2, deploy/harness/platform.py)
+#: mints an event contract by its ticker only for a venue its venue master
+#: holds -- Kalshi (KLSH) and the international Polymarket -- and holds no
+#: QCEX: the custodian's record stays the deployment's provisional LCL- one,
+#: which the lake does not price, so steps 4 to 8 wait for the stand-in to
+#: hold Polymarket US and the run proves what it can (`pending`). Set False
+#: once it does.
+HARNESS_HOLDS_NO_QCEX = True
 NAME = "Polymarket US"
 DATASET = f"{VENUE}:live"
 OUTCOMES = f"{VENUE}:outcomes"
@@ -161,7 +179,7 @@ def recorded_contract(directory):
 def run():
     started = time.time()
     contract = recorded_contract(RECORDED[0]) if RECORDED else CONTRACT
-    compose("down", "-v", "--remove-orphans", check=False)
+    compose("--profile", "runner", "down", "-v", "--remove-orphans", check=False)
     compose("up", "-d")
     for instance in (VENUE, "reader"):
         runner("ready", "--instance", instance)
@@ -207,8 +225,13 @@ def run():
                                         ("range", "symbol", NOT_BINARY, "e2e-custodian"),
                                         ("resolved", "symbol", RESOLVED, "e2e-custodian"),
                                         ("usd", "iso4217", "USD", "")):
+        # Contract v24 (W3.7): the custodian states the contract's description
+        # and currency beside its symbol, the minimum a record is minted from.
+        # Contract v26 (ruling 199): and the venue's ticker under its MIC.
+        stated = {"description": f"The e2e custodian's event contract {value}",
+                  "currency": "USD", "ticker": "QCEX"} if source else {}
         query = urllib.parse.urlencode({"name": name, "scheme": scheme, "value": value,
-                                        "source": source})
+                                        "source": source, **stated})
         ids = read(f"/resolve?{query}")
     subject, ranged, resolved, usd = ids["contract"], ids["range"], ids["resolved"], ids["usd"]
 
@@ -219,6 +242,9 @@ def run():
     runner("licence", OUTCOMES, "kept=true", "retention_days=0", "display=true",
            "personal_use=false", "note=Kept, as the default says, for the e2e's reader.")
     runner("entitle", "--instance", "reader", OUTCOMES, "note=The e2e's reader.")
+
+    if HARNESS_HOLDS_NO_QCEX:
+        return pending(started, subject, ranged, resolved)
 
     # 4. Prices wanted, recorded, read and heard.
     read(f"/follow?subject={subject}&subject={resolved}")
@@ -264,6 +290,11 @@ def run():
     if not EXACT and "ask_amount" in quote and "bid_amount" in quote:
         must(Decimal(quote["bid_amount"]) <= Decimal(quote["ask_amount"]),
              f"step 5, the offer above the bid: {quote}")
+
+    # 5a. No event (contract v26): Polymarket US's market answer names no
+    # event, so the plugin reports no group for the contract.
+    groups = read(f"/groups?subject={subject}")["groups"]
+    must(groups == [], f"step 5a, no event group reported for the contract: {groups}")
 
     # 6. Declined: a market of three sides is not binary.
     read(f"/prices?subject={ranged}&dataset={DATASET}")
@@ -359,11 +390,47 @@ def run():
           "by default; nothing asked of Polymarket US and no record minted before a want; a "
           "custodian's contract, known by its own symbol, read and named, Polymarket US's slug "
           "joined to it, and its last trade, bid and offer recorded per contract in dollars, "
-          "read and heard; its quote with sizes; the market of three sides declined as not "
-          "covered; a settled market's outcome recorded unasked from the contract's side, final, "
+          "read and heard; its quote with sizes; no event group; the market of three sides "
+          "declined as not covered; a settled market's outcome recorded unasked from the contract's side, final, "
           "kept, heard and read back; read_connection and read_datasets answering what the "
           "pages show, the dataset licensed, the payout one dollar; raw responses in storage; "
           "and `store lake` numbering each row with no holes, the wants and the miss")
+
+
+def pending(started, subject, ranged, resolved):
+    """What core v26's harness can prove while its stand-in platform holds no
+    QCEX (HARNESS_HOLDS_NO_QCEX): each record the custodian stated is the
+    deployment's provisional one, a price read of it is unanswered, and no
+    row is recorded against a provisional record."""
+    for name, held in (("contract", subject), ("range", ranged), ("resolved", resolved)):
+        must(held.startswith("LCL-"),
+             f"step 4p, the {name}'s record provisional, the stand-in holding no QCEX: {held}")
+    read(f"/follow?subject={subject}")
+    first = read(f"/prices?subject={subject}&dataset={DATASET}")
+    must(not first["prices"] and first["unanswered"],
+         f"step 4p, a provisional record's price unanswered: {first}")
+    lines = compose("run", "--rm", "-T", "store", "lake").stdout.split("\n")
+    log("store lake:\n" + "\n".join(lines))
+    must(not any(line.startswith("row|") for line in lines),
+         f"step 4p, no row recorded against a provisional record: {lines}")
+    print(f"e2e OK (harness-limited) in {int(time.time() - started)}s: on core's plugin "
+          "harness, the datasets listed; nothing asked of Polymarket US and no record minted "
+          "before a want; the custodian's records, stated by their own symbol and Polymarket "
+          "US's ticker under QCEX, provisional, since the stand-in platform holds no QCEX; "
+          "a price read of one unanswered and no row recorded. Prices, quotes, the decline "
+          "and the outcome wait for the stand-in to hold Polymarket US "
+          "(HARNESS_HOLDS_NO_QCEX)")
+
+
+def diagnose():
+    """On a failure, what the harness holds, kept in the run's log: the
+    instruments, the plugin's Datasets record, and the lake's record."""
+    for what in (("instruments",), ("mcp", "list")):
+        runner(*what, check=False)
+    tools = [t for t in runner("mcp", "list", check=False).stdout.split() if "read_datasets" in t]
+    for tool in tools:
+        runner("mcp", "call", tool, "{}", check=False)
+    compose("run", "--rm", "-T", "store", "lake", check=False)
 
 
 def main():
@@ -371,6 +438,10 @@ def main():
     try:
         run()
     except (Failed, subprocess.TimeoutExpired, KeyError, ValueError, IndexError) as failed:
+        try:
+            diagnose()
+        except (Failed, subprocess.TimeoutExpired):
+            pass
         print(f"e2e FAILED: {failed}; the run is in {LOG}, the components' logs in "
               ".e2e/components.log", file=sys.stderr)
         return 1

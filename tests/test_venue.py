@@ -8,8 +8,8 @@ from collections.abc import Mapping
 from pathlib import Path
 
 import pytest
+from meridian.edge import RawStore
 
-from polymarket_us.raw import RawStore
 from polymarket_us.synthetic import Recorded, Synthetic
 from polymarket_us.venue import GATEWAY, Polymarket, RateLimiter, Response, VenueError
 

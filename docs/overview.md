@@ -7,6 +7,8 @@ Polymarket US is QCX LLC, a CFTC-designated exchange: it is not the
 international Polymarket, and this plugin reads nothing of that venue. It
 needs no key and no account: Polymarket US's public market data is open.
 
+It is a data plugin: its first-use path, its two pages and its Summary figures are every data plugin's, described once on [Using a data plugin](https://open-meridian.dev/how-to/using-a-data-plugin/). These sections cover what is Polymarket US's own.
+
 ## Its role
 
 It holds one role, `data`: it records prices, quotes and outcomes into the
@@ -72,6 +74,14 @@ plugin asks again each minute. Polymarket US states no time of its
 determination or payout, so an outcome is valid from when the answer stating
 it arrived. Paying holders is not the lake's: until the book's servicing
 records payouts, a custodian's payout shows as a break.
+
+## Events
+
+Polymarket US groups its markets into events (a game, an election), but it
+does not say, on a market, which event the market belongs to. So the plugin
+reports no event groups: your deployment holds no group for a Polymarket US
+contract, and each contract is priced on its own. Polymarket US's public
+data does not state whether an event's markets exclude one another either.
 
 ## What it never makes up
 

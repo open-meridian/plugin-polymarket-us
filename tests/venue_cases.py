@@ -1,9 +1,11 @@
-"""Polymarket US's side of the shared tests: this plugin's synthetic exchanges,
-named for what each of the data suite's cases asks a source to present.
+"""Polymarket US's side of the data role's checks: this plugin's synthetic
+exchanges, named for what each of the checks asks a source to present.
 
-tests/test_suite.py runs the SDK's data suite unchanged against the
-plugin's own conversion; this module is the one place the shared tests learn
-which venue they are holding. Each answer comes through the
+tests/test_data_role.py runs the SDK's checks for an event-contract venue
+(`meridian.roles.data.testing.EventContractsChecks`) -- the data suite
+unchanged, the venue's work past the suite's cases, its outcomes, and the
+pages -- against this plugin's own conversion; this module is the one place
+they learn which venue they are holding. Each answer comes through the
 plugin's real client, raw records and reading (synthetic.py's transport over
 the exchanges this package carries, `src/polymarket_us/synthetic/`), with
 invented markets, slugs and values; real recordings are never committed (the
@@ -17,16 +19,15 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-from polymarket_us import page, raw, synthetic
-from polymarket_us.contracts import ContractMap
-from polymarket_us.convert import PolymarketMarket
-from polymarket_us.dgm import Dgm, Standing
-from polymarket_us.market import Market
-from polymarket_us.raw import RawStore
+from meridian.edge import RawStore
+from meridian.roles.data.event_contracts import Market
+
+from polymarket_us import page
+from polymarket_us.convert import PolymarketUsMarket
 from polymarket_us.synthetic import Synthetic
 from polymarket_us.venue import Polymarket, RateLimiter
 
-__all__ = ["ContractMap", "Dgm", "Standing", "market", "page", "raw", "synthetic"]
+__all__ = ["page"]
 
 SYNTHETIC = Path(__file__).parent.parent / "src" / "polymarket_us" / "synthetic"
 
@@ -108,6 +109,13 @@ NOT_PRESENTED = {
     "restates-a-disputed-outcome": "Polymarket US publishes an outcome only once its final "
     "settlement is published, and states no dispute: no outcome is recorded before the final one "
     "to be restated as disputed",
+    # Contract v26 (W3.29): the venue's events, as convert.py says.
+    "reports-an-event-group": "Polymarket US groups markets into events, but a market's answer "
+    "names no event and no public read answers a market's event: finding it would mean reading "
+    "the venue's whole event list, which the plugin never reads, or parsing the market's slug, "
+    "which Polymarket US says not to do",
+    "reports-a-flag-the-venue-does-not-state": "it reports no event group (see "
+    "reports-an-event-group), so no flag to report as not stated",
 }
 
 
@@ -126,7 +134,7 @@ def market(now_ns: int = NOW_NS, directory: Path | None = None) -> Market:
         clock_ns=lambda: now_ns,
         sleep=_instant,
     )
-    return PolymarketMarket(client, "synthetic")
+    return PolymarketUsMarket(client, "synthetic")
 
 
 def calls(market: Any) -> list[str]:
