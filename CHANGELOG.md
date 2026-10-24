@@ -1,5 +1,39 @@
 # Changelog
 
+## 0.4.0
+
+On open-meridian 0.32.2, contract v27 (meridian-design `plans/the-v27-build.md`,
+§B and §G), on core v27's harness.
+
+- **The e2e in full.** Core v27's stand-in platform (a5da59a) holds
+  Polymarket US in its venue master by its MIC, QCEX, so the custodian's
+  records are minted by their ticker under QCEX, paying one dollar:
+  `HARNESS_HOLDS_NO_QCEX` and the harness-limited path are gone, and every
+  step runs -- prices, the quote, no event group, the decline, the outcome,
+  both read tools and the lake's record. Each row now names the venue by
+  its `VEN-` ID, with no miss.
+- **No challenge deadline.** Contract v27's `Outcome.challenge_ends_at_ns`
+  stays 0 ("deadline not reported"): every Polymarket US resolution is
+  final, so it states no window. Said in the README, AGENTS.md and
+  docs/overview.md.
+- **The suite's v27 cases** are named not presented through the SDK's
+  `EVENT_CONTRACTS_NOT_PRESENTED`: the seven rates cases;
+  `records-a-datasets-liveness` (Polymarket US is polled each second, and no
+  stream gives a heartbeat); `queries-the-lake-within-bounds`, about trades
+  from v27 (it records none); and `reports-its-feed-delay`, about latency,
+  with ruling 518's reason (core receives ReportLatency from contract v28,
+  ruling 515).
+- **No events loop.** It reports no event group, so it runs no
+  `Feed.keep_events`, and a range market's bounds, sent with a group's
+  report from contract v27 (ruling 464), reach no row here yet.
+- **The pins**: open-meridian 0.32.2 and plugin-python:0.32.2 by tag and
+  digest (`sha256:2235d96d...54020b80`); core v27's runtime and harness at
+  `a5da59a` (chart 0.1.310) by digest; `meridian` 0.1.52 in check.yaml.
+  e2e-latest.yaml keeps the harness's hidden logs (`include-hidden-files`).
+- Its `DatasetLicence` sets none of 0.32.2's five new fields: core v27
+  refuses a registration carrying them until a core that accepts them is
+  published. The terms page is unchanged.
+
 ## 0.3.1
 
 On open-meridian 0.31.1: a range market's bounds on its contract (the gaps

@@ -73,7 +73,9 @@ past its end whose settlement is not yet published records nothing, and the
 plugin asks again each minute. Polymarket US states no time of its
 determination or payout, so an outcome is valid from when the answer stating
 it arrived. Paying holders is not the lake's: until the book's servicing
-records payouts, a custodian's payout shows as a break.
+records payouts, a custodian's payout shows as a break. Since every
+resolution is final, an outcome carries no challenge deadline: your pages
+show "deadline not reported".
 
 ## Events
 

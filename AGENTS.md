@@ -33,7 +33,7 @@ trades, and never calls the authenticated API (api.polymarket.us).
   the synthetic exchanges in `src/polymarket_us/synthetic/`, or a
   developer's recorded ones.
 - **What every data plugin of an event-contract venue does is the SDK's**
-  (open-meridian 0.31.1; nothing is copied between plugins, the product
+  (open-meridian 0.32.2; nothing is copied between plugins, the product
   owner, 2026-10-13): naming each subject, resolving the cash and the venue,
   recording prices, quotes and outcomes, and answering wants and keeping
   them current are `meridian.roles.data.event_contracts.Feed`, over the
@@ -57,7 +57,9 @@ trades, and never calls the authenticated API (api.polymarket.us).
   plugin reports no group (`Feed.report_event` is never called), and the
   suite's two event cases are not presented, with why. `convert.bounds`
   reads a range market's bounds from `assetPriceTerms`, set on the
-  contract (open-meridian 0.31.1's contract map keeps them).
+  contract (the contract map keeps them); with no group reported, contract
+  v27's `member_bounds` (ruling 464) is never sent. It has no `event(ref)`,
+  so it runs no `Feed.keep_events`.
 - **The lake's rules, which the SDK's data suite holds** (`tests/test_data_role.py`
   runs it through the SDK's checks): per subject wanted, never the whole venue -- read its record
   (`resolve_instrument`, W3.6) and name Polymarket US's contract by its
@@ -95,7 +97,8 @@ trades, and never calls the authenticated API (api.polymarket.us).
   (or the BBO's) as the outcome: an open market states one daily. Polymarket
   US states no time of determination or payout, so the outcome is valid from
   when the settlement answer first arrived, and that answer is its raw
-  record. No business date; no `want_id`.
+  record. No business date; no `want_id`. `Outcome.challenge_ends_at_ns`
+  (contract v27) stays 0: every resolution is final, so no window is stated.
 - **A data plugin shows no market data** (ruled 2026-10-03). Its pages are
   the data role's (meridian-design `spec/plugin-pages-follow-their-role.md`):
   Connection and Datasets, under Manage alone, drawn by the SDK's templates
