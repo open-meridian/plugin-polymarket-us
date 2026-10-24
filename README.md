@@ -14,11 +14,11 @@ key and no account: Polymarket US's public gateway needs none. It never
 trades.
 
 What it does alike with every data plugin of an event-contract venue is the
-SDK's (`meridian.roles.data.event_contracts`, open-meridian 0.31.1), never
+SDK's (`meridian.roles.data.event_contracts`, open-meridian 0.32.2), never
 copied from another plugin: it runs the SDK's data suite and its checks for
 an event-contract venue unchanged against its own conversion.
 
-**Status.** 0.3.1, built on open-meridian 0.31.1 (contract v26, a range market's bounds on its contract, its work the SDK's role helpers; contract v25's whole declaration and docs/, which a deployment shows on its Documentation tab), holding the
+**Status.** 0.4.0, built on open-meridian 0.32.2 (contract v27, its e2e in full on core v27's harness, which holds QCEX; contract v26, a range market's bounds on its contract, its work the SDK's role helpers; contract v25's whole declaration and docs/, which a deployment shows on its Documentation tab), holding the
 role `data`. Not released, uploaded or launched anywhere.
 
 ## What it does
@@ -86,7 +86,10 @@ Two datasets, declared from code in its catalogue (`declaration.py`):
   stating it arrived, and its payout time is left unset. A market past its
   end whose settlement is not yet published (`MARKET_STATUS_RESOLVING`)
   records nothing, and is read again each minute. One row key per contract
-  (`<slug>:outcome`).
+  (`<slug>:outcome`). **No challenge deadline** (contract v27's
+  `Outcome.challenge_ends_at_ns`, left 0, which pages show as "deadline not
+  reported"): "All resolutions are final" under its rulebook, so
+  Polymarket US states no window to challenge one.
 - **What is never read as anything else.** The `settlementPx` an open
   market's book states (with a calculation method and a time of its own) is
   a daily settlement price, never its outcome. `/v1/price-history` is
@@ -125,8 +128,10 @@ Two datasets, declared from code in its catalogue (`declaration.py`):
   the public gateway. So the plugin reports no group. A range market's
   bounds (`assetPriceTerms`: a bucket's `rangeLower` and `rangeUpper`, an
   above/below market's `strike`, each inclusive) are on its contract, kept
-  in the contract map; a bound reaches no row in contract v26 (its data
-  path is contract v27's, ruling 464).
+  in the contract map. Contract v27 sends a range member's bounds with its
+  event group's report (ruling 464), so with no group reported they reach
+  no row here either; they are sent once a public read names a market's
+  event.
 
 ### What it does not serve
 
@@ -143,9 +148,15 @@ recorded before the final one to be restated. Contract v26's
 not presented: it reports no group, as above. Every other case passes:
 `records-an-outcome` at the final stage (the case takes determined or
 final), `records-a-partial-payout` on a settlement price between nothing
-and the payout, `reads-its-datasets-licences` and
-`queries-the-lake-within-bounds` (the SDK's producer) among them;
-`hears-and-reads-an-event-group` is answered by the SDK.
+and the payout, and `reads-its-datasets-licences` among them;
+`hears-and-reads-an-event-group` is answered by the SDK. Contract v27's
+cases an event-contract venue never presents are the SDK's list
+(`EVENT_CONTRACTS_NOT_PRESENTED`): the seven rates cases (it publishes no
+rates); `records-a-datasets-liveness` (Polymarket US is polled over REST
+each second, and no stream gives a heartbeat to record); and
+`queries-the-lake-within-bounds`, about trades from v27 (it records none).
+`reports-its-feed-delay`, about latency, is not presented under ruling 518:
+core receives ReportLatency from contract v28 (ruling 515).
 
 ## Settings
 
@@ -220,12 +231,11 @@ contract read and named, its prices and quote recorded in dollars, read and
 heard, no event group reported, a market of three sides declined, a settled market's outcome
 recorded unasked, final, and read back, both read tools answering what the
 pages show, and `store lake` numbering each row with no holes (`e2e/run.py`
-says each step). On core v26's harness (17a13a2) the custodian states the
-contract's ticker under `QCEX` beside its own symbol (ruling 199); the
-stand-in platform mints an event contract by its ticker only for a venue
-its venue master holds, and it does not hold `QCEX`, so the custodian's
-records stay provisional and the run proves what that harness can
-(`HARNESS_HOLDS_NO_QCEX`) until it does.
+says each step). The custodian states the contract's ticker under `QCEX`
+beside its own symbol (ruling 199), and core v27's stand-in platform
+(a5da59a), whose venue master holds Polymarket US by its MIC, mints its
+record by it, paying one dollar; each row names the venue by its `VEN-`
+ID, with no miss.
 
     docker run --rm --entrypoint python -v "$PWD/e2e":/e2e:ro \
         -v "$PWD/recordings":/recordings polymarket-us:local /e2e/record.py SLUG ...

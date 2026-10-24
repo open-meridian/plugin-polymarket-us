@@ -21,6 +21,7 @@ from typing import Any
 
 from meridian.edge import RawStore
 from meridian.roles.data.event_contracts import Market
+from meridian.roles.data.testing import EVENT_CONTRACTS_NOT_PRESENTED
 
 from polymarket_us import page
 from polymarket_us.convert import PolymarketUsMarket
@@ -84,8 +85,14 @@ DISPUTED: tuple[str, tuple[Path, ...]] | None = None
 
 #: The suite's cases Polymarket US never presents here, each with why: the
 #: live dataset publishes prices and quotes now, per contract, in dollars,
-#: and the outcomes dataset each final settlement.
+#: and the outcomes dataset each final settlement. From contract v27 the SDK
+#: names an event-contract venue's own (`EVENT_CONTRACTS_NOT_PRESENTED`): the
+#: rates cases; the dataset's liveness, since Polymarket US is polled over
+#: REST and no stream gives a heartbeat; `queries-the-lake-within-bounds`,
+#: about trades, which it records none of; and the feed delay, about
+#: `latency`, which core receives from contract v28 (ruling 518).
 NOT_PRESENTED = {
+    **EVENT_CONTRACTS_NOT_PRESENTED,
     "a-daily-close": "its live dataset publishes prices and quotes now, and no daily closes",
     "the-forming-day-restated": "its live dataset publishes no daily closes to restate",
     "a-daily-bar": "it publishes no bars: Polymarket US's price history is book-derived display "
