@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.6.0
+
+On open-meridian 0.33.1, contract v28 (rulings 624 to 626), on core v28's
+harness.
+
+- **No bars, and why** (624): open-meridian 0.33.1 lets an event-contract
+  venue keep hourly and daily bars (`Market.bars`, `Feed.keep_bars`);
+  Polymarket's and Kalshi's plugins do from 0.11.0. This one keeps none and
+  declares no `bars` dataset: Polymarket US's public price history is
+  "book-derived Yes and No display prices", which "are not individual
+  trades" (docs.polymarket.us, "Get Price History", read 2026-10-26), and
+  its public trades are only on its WebSocket, which this REST-polled
+  plugin does not hold. The README says so; `a-daily-bar` stays not
+  presented.
+- **The feed delay** (626): the SDK's producer now stands its want on the
+  quote where the last trade states no time; this plugin's last trade
+  states one, so its case passes as before, on the SDK's producer.
+- **The pins**: open-meridian 0.33.1 and plugin-python:0.33.1 by tag and
+  digest (`sha256:75ec238c...d5f46bac`); core's runtime and harness stay at
+  `8def82a` (chart 0.1.313); `meridian` stays 0.1.52 in check.yaml.
+
 ## 0.5.0
 
 On open-meridian 0.33.0, contract v28 (meridian-design `plans/the-v28-build.md`;

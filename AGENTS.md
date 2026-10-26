@@ -33,7 +33,7 @@ trades, and never calls the authenticated API (api.polymarket.us).
   the synthetic exchanges in `src/polymarket_us/synthetic/`, or a
   developer's recorded ones.
 - **What every data plugin of an event-contract venue does is the SDK's**
-  (open-meridian 0.33.0; nothing is copied between plugins, the product
+  (open-meridian 0.33.1; nothing is copied between plugins, the product
   owner, 2026-10-13): naming each subject, resolving the cash and the venue,
   recording prices, quotes and outcomes, and answering wants and keeping
   them current are `meridian.roles.data.event_contracts.Feed`, over the
