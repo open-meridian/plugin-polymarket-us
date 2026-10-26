@@ -33,9 +33,10 @@ polymarket-us = "polymarket_us.__main__:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 
-# The synthetic exchanges, installed beside the code that reads them.
+# The synthetic exchanges, installed beside the code that reads them, and the
+# Connection page's template.
 [tool.setuptools.package-data]
-polymarket_us = ["synthetic/*.json"]
+polymarket_us = ["synthetic/*.json", "templates/polymarket_us/*.html"]
 
 # What this plugin says about itself, which `meridian plugin upload` sends and
 # a deployment admin approves before it runs (W8). Declarations, not grants.
