@@ -52,6 +52,9 @@ EXACT = "syn-crypto-btc-above-2026-12-31-150000"
 EXACT_LAST = "0.123456789012345678"
 #: A market with bids and no offer.
 ONE_SIDED = "syn-weather-nyc-snow-2026-12-25"
+#: A market whose book is crossed, its best bid above its best offer:
+#: recorded invalid by the edge (contract v28, ruling 424).
+CROSSED = "syn-weather-nyc-rain-2026-12-24"
 #: A market of three sides, not one instrument's long and short side.
 NOT_BINARY = "syn-mlb-ws-2026-three-sides"
 #: Polymarket US prices in US dollars: no stablecoin, so its cash is a
@@ -89,8 +92,10 @@ DISPUTED: tuple[str, tuple[Path, ...]] | None = None
 #: names an event-contract venue's own (`EVENT_CONTRACTS_NOT_PRESENTED`): the
 #: rates cases; the dataset's liveness, since Polymarket US is polled over
 #: REST and no stream gives a heartbeat; `queries-the-lake-within-bounds`,
-#: about trades, which it records none of; and the feed delay, about
-#: `latency`, which core receives from contract v28 (ruling 518).
+#: about trades, which it records none of;
+#: from contract v28 the chains and filings cases, and the duplicate and gap
+#: cases, since its quotes are polled and no message is numbered. Its feed
+#: delay is reported (required again from contract v28, ruling 518).
 NOT_PRESENTED = {
     **EVENT_CONTRACTS_NOT_PRESENTED,
     "a-daily-close": "its live dataset publishes prices and quotes now, and no daily closes",

@@ -1,0 +1,16 @@
+{#- Polymarket US's Connection: the event-contract venue's
+    (meridian/roles/data/event_contracts/connection.html), and under
+    "Limits and use" one line of Polymarket US's published taker fee rate by
+    market category, its source and the day it was read (fees.py), the
+    whole a tap away. -#}
+{% extends "meridian/roles/data/event_contracts/connection.html" %}
+{% block vendor_rows %}
+{{ super() }}
+{% if section == "Limits and use" %}
+{% import "meridian/roles/_rows.html" as om %}
+{% set fees = data.fees %}
+{% set rates %}{% for r in fees.rates %}{{ r.category }} {{ r.taker }}{% if not loop.last %}, {% endif %}{% endfor %}{% endset %}
+{% set note = [fees.not_read, fees.formula, ("read " if fees.rates else "tried ") ~ fees.read_on ~ " at " ~ fees.source, fees.per_market]|select|join("; ") %}
+{{ om.row("Fees", ("Taker by category: " ~ rates ~ "; makers " ~ fees.makers) if fees.rates else "Not read", note) }}
+{% endif %}
+{% endblock %}

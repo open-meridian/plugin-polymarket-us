@@ -169,12 +169,12 @@ class Reader:
             return {"heard": self.heard}
         if path == "/outcomes":
             answer = await self.plugin.list_outcomes(
-                subjects=[ops.SubjectRef(entity_id=s) for s in query["subject"]])
+                subjects=[meridian.SubjectRef(entity_id=s) for s in query["subject"]])
             return {"outcomes": [outcome_json(o) for o in answer.outcomes]}
         if path == "/groups":
             answer = await self.plugin.list_event_groups(instrument_ids=query["subject"])
             return {"groups": [group_json(g) for g in answer.event_groups]}
-        asked = {"subjects": [ops.SubjectRef(entity_id=s) for s in query["subject"]]}
+        asked = {"subjects": [meridian.SubjectRef(entity_id=s) for s in query["subject"]]}
         if one("dataset"):
             asked["sources"] = SourceChoice(named=[one("dataset")])
         if path == "/prices":

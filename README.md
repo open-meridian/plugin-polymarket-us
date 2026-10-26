@@ -14,12 +14,12 @@ key and no account: Polymarket US's public gateway needs none. It never
 trades.
 
 What it does alike with every data plugin of an event-contract venue is the
-SDK's (`meridian.roles.data.event_contracts`, open-meridian 0.32.2), never
+SDK's (`meridian.roles.data.event_contracts`, open-meridian 0.33.0), never
 copied from another plugin: it runs the SDK's data suite and its checks for
 an event-contract venue unchanged against its own conversion.
 
-**Status.** 0.4.0, built on open-meridian 0.32.2 (contract v27, its e2e in full on core v27's harness, which holds QCEX; contract v26, a range market's bounds on its contract, its work the SDK's role helpers; contract v25's whole declaration and docs/, which a deployment shows on its Documentation tab), holding the
-role `data`. Not released, uploaded or launched anywhere.
+**Status.** 0.5.0, built on open-meridian 0.33.0 (contract v28: its feed delay reported, a crossed quote recorded invalid at the edge, and its published fee schedule on Connection; contract v27, its e2e in full on core's harness, which holds QCEX; contract v26, a range market's bounds on its contract, its work the SDK's role helpers; contract v25's whole declaration and docs/, which a deployment shows on its Documentation tab), holding the
+role `data`.
 
 ## What it does
 
@@ -155,8 +155,13 @@ cases an event-contract venue never presents are the SDK's list
 rates); `records-a-datasets-liveness` (Polymarket US is polled over REST
 each second, and no stream gives a heartbeat to record); and
 `queries-the-lake-within-bounds`, about trades from v27 (it records none).
-`reports-its-feed-delay`, about latency, is not presented under ruling 518:
-core receives ReportLatency from contract v28 (ruling 515).
+Contract v28's are the SDK's list too: the option-chain and filings cases
+(it lists no chain and publishes no filing), and
+`a-duplicate-is-recorded-suspicious` and `rows-after-a-gap-are-suspicious`
+(its quotes are polled; no message is numbered).
+`a-crossed-quote-is-recorded-invalid` passes on a synthetic market whose
+book is crossed, and `reports-its-feed-delay` (required from contract v28,
+ruling 518) on a standing want kept current, its rows' age at the edge.
 
 ## Settings
 
@@ -182,7 +187,13 @@ the reading roles.
   subject the lake asked for) and, the role's row for a source of one venue,
   the venue master's ID it resolved; "Limits and use" -- what Polymarket US
   allows and what the plugin spends of it, its calls and the rate-limited
-  ones waited out, the last call and the last error; "Stream" -- "Does not
+  ones waited out, the last call and the last error, and, from 0.5.0,
+  "Fees": Polymarket US's published taker fee rate by market category --
+  0.0695, and 0.10 for Table Tennis, makers rebated by tier, combos on
+  their own curve -- read from docs.polymarket.us/fees on 2026-10-26
+  (effective 2026-10-19), for the options sample's fee schedule to take;
+  each market states its own `category` and `feeCoefficient`, which
+  applies to it (`fees.py`); "Stream" -- "Does not
   stream": it reads a contract when it is wanted, at most once a second.
 - **Datasets**: "Served" -- each dataset, its data, how its rows arrive,
   its day, its default terms and whether a deployment admin has licensed it,

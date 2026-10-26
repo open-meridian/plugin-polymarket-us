@@ -252,5 +252,33 @@
    },
    "transactTime": null
   }
+ },
+ "syn-weather-nyc-rain-2026-12-24": {
+  "marketData": {
+   "marketSlug": "syn-weather-nyc-rain-2026-12-24",
+   "bids": [
+    {
+     "px": {
+      "value": "0.5200",
+      "currency": "USD"
+     },
+     "qty": "30.0000"
+    }
+   ],
+   "offers": [
+    {
+     "px": {
+      "value": "0.4800",
+      "currency": "USD"
+     },
+     "qty": "20.0000"
+    }
+   ],
+   "state": "MARKET_STATE_OPEN",
+   "stats": {
+    "lastPriceSample": null
+   },
+   "transactTime": "2026-10-10T11:59:57.000000000Z"
+  }
  }
 }

@@ -598,5 +598,69 @@
    "minimumTradeQty": 0.01,
    "comboEnabled": false
   }
+ },
+ "syn-weather-nyc-rain-2026-12-24": {
+  "market": {
+   "id": "9113",
+   "question": "Rain in New York City on December 24?",
+   "slug": "syn-weather-nyc-rain-2026-12-24",
+   "endDate": "2026-12-25T05:00:00Z",
+   "category": "weather",
+   "startDate": "2026-09-01T12:00:00Z",
+   "description": "Synthetic market for tests: invented, never listed.",
+   "active": true,
+   "marketType": "",
+   "closed": false,
+   "createdAt": "2026-09-01T12:00:00Z",
+   "updatedAt": "2026-10-10T11:00:00Z",
+   "archived": false,
+   "orderPriceMinTickSize": 0.001,
+   "marketSides": [
+    {
+     "id": "91131",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-weather-nyc-rain-2026-12-24",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "Yes",
+     "price": "0.5000",
+     "marketId": 9113,
+     "long": true,
+     "quote": {
+      "value": "0.5000",
+      "currency": "USD"
+     },
+     "tradable": true
+    },
+    {
+     "id": "91132",
+     "marketSideType": "MARKET_SIDE_TYPE_INSTRUMENT",
+     "identifier": "syn-weather-nyc-rain-2026-12-24",
+     "createdAt": "2026-09-01T12:00:00Z",
+     "updatedAt": "2026-09-01T12:00:00Z",
+     "description": "No",
+     "price": "0.5000",
+     "marketId": 9113,
+     "long": false,
+     "quote": {
+      "value": "0.5000",
+      "currency": "USD"
+     },
+     "tradable": true
+    }
+   ],
+   "outcomes": "[\"Yes\", \"No\"]",
+   "outcomePrices": "[\"0.5000\", \"0.5000\"]",
+   "ep3Status": "OPEN",
+   "status": "MARKET_STATUS_OPEN",
+   "assetPriceTerms": null,
+   "hidden": false,
+   "tags": [],
+   "title": "Rain on Christmas Eve",
+   "subtitle": "",
+   "feeCoefficient": 0.0695,
+   "minimumTradeQty": 0.01,
+   "comboEnabled": false
+  }
  }
 }

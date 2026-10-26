@@ -8,8 +8,11 @@ or size is on either page; viewing prices is for the reading roles.
 
 - **Connection** (`/`, `read_connection`): "Key" -- Live, or Sample data;
   "No key needed"; what Polymarket US entitles it to; the venue master's ID it
-  resolved -- "Limits and use", and "Stream": "Does not stream", since it
-  reads each contract when it is wanted, at most once a second.
+  resolved -- "Limits and use", with, from 0.5.0, "Fees": Polymarket US's
+  published taker fee rate by market category, its source and the day it
+  was read (fees.py), for the options sample's fee schedule to take -- and
+  "Stream": "Does not stream", since it reads each contract when it is
+  wanted, at most once a second.
 - **Datasets** (`/datasets`, `read_datasets`): "Served" (`live`, and
   `outcomes`), "Wants" (searched and paged), "Subjects", then a section under
   Polymarket US's name: the contract map, the cash its prices and payouts
@@ -22,6 +25,9 @@ read tool on the deployment's MCP surface answering the same record.
 
 from __future__ import annotations
 
+from dataclasses import dataclass, field
+from pathlib import Path
+
 import meridian
 from meridian import Figure
 from meridian.roles.data import event_contracts
@@ -29,12 +35,21 @@ from meridian.roles.data import event_contracts
 from .convert import ENTITLED as ENTITLED
 from .convert import NAME, VENDOR_NOTE, VENUE
 from .declared import CATALOGUE
+from .fees import FEES, Fees
 
 TITLE = NAME
 #: The kit the pages are built against: 0.12.0's next step (`data-om-opens`).
 KIT = "0.12.0"
 
-pages = meridian.Pages(TITLE, kit=KIT)
+pages = meridian.Pages(TITLE, kit=KIT, templates=Path(__file__).parent / "templates")
+
+
+@dataclass(frozen=True)
+class ConnectionRead(event_contracts.ConnectionRead):
+    """The event-contract venue's Connection, and Polymarket US's published fee
+    schedule (fees.py; from 0.5.0)."""
+
+    fees: Fees = field(default_factory=Fees)
 
 
 class _Held:
@@ -49,8 +64,9 @@ def hold(feed: event_contracts.Feed) -> None:
     HELD.feed = feed
 
 
-def connection_now() -> event_contracts.ConnectionRead:
-    return event_contracts.connection_read(HELD.feed, NAME, ENTITLED)
+def connection_now() -> ConnectionRead:
+    read = event_contracts.connection_read(HELD.feed, NAME, ENTITLED)
+    return ConnectionRead(**vars(read), fees=FEES)
 
 
 def datasets_now() -> event_contracts.DatasetsRead:
@@ -61,15 +77,17 @@ def datasets_now() -> event_contracts.DatasetsRead:
     "/",
     "Connection",
     levels="admin",
-    answers=event_contracts.ConnectionRead,
+    answers=ConnectionRead,
     name="read_connection",
 )
 def connection(request: meridian.Request) -> meridian.Response:
     """How the plugin reaches Polymarket US: the mode, no key needed, what
     Polymarket US entitles it to and the venue master's ID it resolved; its
     limits and what the plugin spends of them, its calls, the last call and
-    the last error; and that it does not stream."""
-    return pages.answer("meridian/roles/data/event_contracts/connection.html", connection_now())
+    the last error, and Polymarket US's published taker fee rate by market
+    category, with its source and the day it was read; and that it does not
+    stream."""
+    return pages.answer("polymarket_us/connection.html", connection_now())
 
 
 @pages.page(
