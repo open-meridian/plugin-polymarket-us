@@ -14,11 +14,11 @@ key and no account: Polymarket US's public gateway needs none. It never
 trades.
 
 What it does alike with every data plugin of an event-contract venue is the
-SDK's (`meridian.roles.data.event_contracts`, open-meridian 0.33.0), never
+SDK's (`meridian.roles.data.event_contracts`, open-meridian 0.33.1), never
 copied from another plugin: it runs the SDK's data suite and its checks for
 an event-contract venue unchanged against its own conversion.
 
-**Status.** 0.5.0, built on open-meridian 0.33.0 (contract v28: its feed delay reported, a crossed quote recorded invalid at the edge, and its published fee schedule on Connection; contract v27, its e2e in full on core's harness, which holds QCEX; contract v26, a range market's bounds on its contract, its work the SDK's role helpers; contract v25's whole declaration and docs/, which a deployment shows on its Documentation tab), holding the
+**Status.** 0.6.0, built on open-meridian 0.33.1 (contract v28: no bars, and why, below; its feed delay reported, a crossed quote recorded invalid at the edge, and its published fee schedule on Connection; contract v27, its e2e in full on core's harness, which holds QCEX; contract v26, a range market's bounds on its contract, its work the SDK's role helpers; contract v25's whole declaration and docs/, which a deployment shows on its Documentation tab), holding the
 role `data`.
 
 ## What it does
@@ -135,9 +135,24 @@ Two datasets, declared from code in its catalogue (`declaration.py`):
 
 ### What it does not serve
 
+**No bars** (ruling 624). Polymarket's and Kalshi's plugins keep each
+contract's hourly and daily bars from 0.11.0, built from trades; this one
+keeps none, and its catalogue declares no `bars` dataset (open-meridian
+0.33.1's hook is optional: a `Market` without it serves two datasets).
+Polymarket US's public reads state no trade history to build them from: its
+price history (`/v1/price-history`, docs.polymarket.us, "Get Price
+History") returns "book-derived Yes and No display prices" -- the Yes price
+"normally derived from the best ask", the No from one minus the best bid --
+which "are not individual trades", at fixed fidelities (three-hour points
+over 30 days); its public trades are only on the Markets WebSocket, which
+this plugin, polled over REST, does not hold, and its RFQ trades only
+those that came from an RFQ. A bar of display prices would be a bar of
+quotes, not of trades, so none is recorded rather than one that says
+otherwise. Read 2026-10-26.
+
 The SDK's data suite's cases about a kind of data this plugin never
 publishes are marked not presented, with why (`tests/venue_cases.py`): daily
-closes and bars (its price history is display prices, not trades), trades,
+closes and bars, trades,
 a currency's rate, a stablecoin's price, a security's price, a settlement
 calendar or date (an event contract settles on its outcome), and a restart's
 gap of trades. `restates-a-disputed-outcome` (`about: disputed outcomes`) is
