@@ -77,6 +77,18 @@ records payouts, a custodian's payout shows as a break. Since every
 resolution is final, an outcome carries no challenge deadline: your pages
 show "deadline not reported".
 
+## Fees
+
+Connection's "Fees" row shows Polymarket US's published fee schedule, as
+read from its fee schedule page (docs.polymarket.us/fees) on 2026-10-26,
+effective from 19 October 2026: a taker pays a coefficient times the
+contracts times p x (1 - p), at a price p, the coefficient 0.0695, and 0.10
+on Table Tennis markets; makers pay none and are rebated by their maker
+tier; combos take their own curve. Each market states its own category and
+coefficient, which applies to it. The options sample's fee schedule takes
+these rates with this source and date; a later schedule is read again at the
+plugin's next version.
+
 ## Events
 
 Polymarket US groups its markets into events (a game, an election), but it

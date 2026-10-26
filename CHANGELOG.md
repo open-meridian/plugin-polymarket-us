@@ -1,5 +1,37 @@
 # Changelog
 
+## 0.5.0
+
+On open-meridian 0.33.0, contract v28 (meridian-design `plans/the-v28-build.md`;
+task `sdk-contract/venue-plugins-keep-outcome-stages-and-bars`), on core
+v28's harness.
+
+- **Fees by market category** (571's category column; task
+  `sdk-contract/event-contract-fees-vary-by-market-category`): Connection's
+  "Limits and use" gains a "Fees" row, and `read_connection` a `fees`
+  record -- Polymarket US's published taker fee rate by market category
+  (0.0695; Table Tennis 0.10; combos their own curve), what makers get back,
+  the formula, and its source and the day it was read (docs.polymarket.us,
+  "Fee Schedule", read 2026-10-26, effective 2026-10-19), for the options
+  sample's fee schedule to take (`fees.py`). Each market states its own
+  `category` and `feeCoefficient`, which applies to it.
+- **Outcomes stay final.** Polymarket US publishes no proposed, determined
+  or disputed stage ("All resolutions are final"), so an outcome is still
+  recorded once, final, and `challenge_ends_at_ns` stays 0.
+- **The suite's v28 cases**: `reports-its-feed-delay` is presented (518: the
+  latency cases are required again), a standing want kept current, its
+  rows' age at the edge; `a-crossed-quote-is-recorded-invalid` on a
+  synthetic market whose book is crossed (`CROSSED`); the option-chain,
+  filings, duplicate and gap cases not presented, the SDK's list
+  (`EVENT_CONTRACTS_NOT_PRESENTED`, ruling 602).
+- **`meridian plugin migrate`** (to_0_33_0): e2e/reader.py's SubjectRefs
+  handed to the SDK are `meridian.SubjectRef` (ruling 599).
+- **The pins**: open-meridian 0.33.0 and plugin-python:0.33.0 by tag and
+  digest (`sha256:c95f1a03...c0fe39c6`); core v28's runtime and harness at
+  `8def82a` (chart 0.1.313) by digest; `meridian` stays 0.1.52 in
+  check.yaml until 0.1.53 is released.
+- The README's "not released" line is gone.
+
 ## 0.4.0
 
 On open-meridian 0.32.2, contract v27 (meridian-design `plans/the-v27-build.md`,
