@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.1
+
+SDK 0.33.4: raw-record writes and enum conversion fixes (ruling 937).
+
+- **The pins:** open-meridian 0.33.1 to 0.33.4, and plugin-python:0.33.4 by tag
+  and digest (`meridian plugin migrate --to 0.33.4`: only the pins move).
+
 ## 0.6.0
 
 On open-meridian 0.33.1, contract v28 (rulings 624 to 626), on core v28's
