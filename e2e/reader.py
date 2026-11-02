@@ -201,6 +201,11 @@ class Reporting(reporting.Role):
     """`reporting`: reads prices, outcomes and event groups, and hears the
     prices and outcomes recorded for the subjects it follows."""
 
+    # It hears what is recorded once it follows: a stream opened again for
+    # the subjects it follows reads nothing back, so a read is the lake's
+    # first ask of the plugin (open-meridian 0.35.1).
+    seed = False
+
     def __init__(self, reader):
         self.reader = reader
 
@@ -217,6 +222,11 @@ class Reporting(reporting.Role):
 class Signal(signal.Role):
     """`signal`: reads and hears quotes, which `reporting` does not read (the
     plan's Q9)."""
+
+    # It hears what is recorded once it follows: a stream opened again for
+    # the subjects it follows reads nothing back, so a read is the lake's
+    # first ask of the plugin (open-meridian 0.35.1).
+    seed = False
 
     def __init__(self, reader):
         self.reader = reader

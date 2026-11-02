@@ -32,7 +32,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Any
 
@@ -79,12 +79,9 @@ def contract_map(store: RawStore, mode: str) -> ContractMap:
 class Lake(Feed):
     """The data role's class: the SDK's event-contract feed over Polymarket
     US's conversion, which hears what the lake wants and keeps its standing
-    wants current, held until the settings have said where to answer
-    from."""
+    wants current."""
 
     store: RawStore | None = None
-    #: Set once the first settings have said where to answer from.
-    configured: asyncio.Event = field(default_factory=asyncio.Event)
 
     async def on_settings(self, delivered: Any) -> None:
         """Each delivery of the settings: the source switched where synthetic
@@ -99,7 +96,6 @@ class Lake(Feed):
             chosen = market(self.store, synthetic)
             self.use(chosen, contract_map(self.store, chosen.session.mode))
             log.info("answering from %s", chosen.session.mode)
-        self.configured.set()
         if self.store is not None:
             window = values.get(f"{KIND}_window_days")
             past = values.get(f"{KIND}_past_window")
@@ -110,25 +106,11 @@ class Lake(Feed):
                 datetime.now(UTC).date(),
             )
 
-    async def venue_id(self) -> str:
-        """The venue master's ID for the venue, resolved through this role
-        object. Open-meridian 0.35.0's `Feed.venue_id` hands the connection
-        to `Venue.resolve`, which makes the data role's acts and so must be
-        given the role (ruling 1023); drop this once the SDK passes `self`."""
-        return await self.venue.resolve(
-            self, self.market.venue_identifiers, self.market.venue, self.clock_ns()
-        )
-
-    async def on_observations_wanted(self, heard: Any) -> None:
-        """What the lake wants, once the settings have said where to answer
-        from."""
-        await self.configured.wait()
-        await super().on_observations_wanted(heard)
-
     async def run(self) -> None:
-        """Each standing want kept current, and its health said each minute.
-        Polymarket US names no event and keeps no bars, so neither is kept."""
-        await asyncio.gather(self.keep_current(), self._health())
+        """The SDK's feed's work -- each standing want kept current (Polymarket
+        US names no event and keeps no bars, so neither is kept) -- and its
+        health said each minute."""
+        await asyncio.gather(super().run(), self._health())
 
     async def _health(self) -> None:
         """Each minute: its datasets' licences read again (contract v20), and
