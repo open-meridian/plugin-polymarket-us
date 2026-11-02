@@ -22,6 +22,11 @@ On open-meridian 0.35.0, contract v29 (rulings 1003, 1004, 1005, 1009 to
   (`Recorder.hear`) and the e2e's reader (three role classes -- `custody`,
   `reporting`, `signal` -- on `meridian.run_async`, its acts made through
   them) were moved by hand.
+- **The venue resolved through the role** (ruling 1023): `Lake.venue_id`
+  hands the role object to `Venue.resolve`, where open-meridian 0.35.0's
+  feed hands the connection, which makes no act under `meridian.run` (the
+  e2e's wants were declined, the venue unresolved). Dropped once the SDK
+  passes the role itself.
 - **A market's category** (ruling 954) is not recorded yet: contract v29
   gives a data plugin no act carrying `BinaryEventContract.category`.
 - **The pins:** open-meridian 0.35.0 and plugin-python:0.35.0 by tag and

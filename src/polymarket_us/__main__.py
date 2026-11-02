@@ -110,6 +110,15 @@ class Lake(Feed):
                 datetime.now(UTC).date(),
             )
 
+    async def venue_id(self) -> str:
+        """The venue master's ID for the venue, resolved through this role
+        object. Open-meridian 0.35.0's `Feed.venue_id` hands the connection
+        to `Venue.resolve`, which makes the data role's acts and so must be
+        given the role (ruling 1023); drop this once the SDK passes `self`."""
+        return await self.venue.resolve(
+            self, self.market.venue_identifiers, self.market.venue, self.clock_ns()
+        )
+
     async def on_observations_wanted(self, heard: Any) -> None:
         """What the lake wants, once the settings have said where to answer
         from."""

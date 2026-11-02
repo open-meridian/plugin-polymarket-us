@@ -70,3 +70,15 @@ async def test_a_want_waits_for_the_settings(tmp_path: Path) -> None:
     await lake.on_settings(Settings(values={SAMPLE_DATA: True}))
     await asyncio.wait_for(heard, 5)
     assert [h.want_id for h in lake.heard] == ["WNT-1"]
+
+
+async def test_the_venue_is_resolved_through_the_role_not_the_connection(tmp_path: Path) -> None:
+    """Registered by `meridian.run`, the class's connection makes no act:
+    the venue is resolved through the role object (ruling 1023)."""
+    lake, _ = _lake(tmp_path)
+    recorder = Recorder(v.VENUE)
+    lake._bind(object())  # a connection that makes no act, as the sidecar's
+    lake._operate = recorder._operate  # type: ignore[method-assign]
+    lake._operations = recorder._operations  # type: ignore[method-assign]
+    assert await lake.venue_id()
+    assert recorder.on("ResolveVenue")
