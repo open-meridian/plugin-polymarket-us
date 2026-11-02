@@ -12,11 +12,13 @@ publish and subscribe to comes from the role `pyproject.toml` declares under
 `[tool.meridian]` (`data`), once a deployment admin approves it. It never
 trades, and never calls the authenticated API (api.polymarket.us).
 
-- `src/polymarket_us/__main__.py` connects to the sidecar declaring the
-  catalogue, the storage and the settings (`declaration.py`) and the pages
-  (`page.py`), serves them, hears what the lake wants
-  (`plugin.receive(observations_wanted=..., want_withdrawn=...)`) and keeps
-  each standing want current, polling: Polymarket US's market WebSocket
+- `src/polymarket_us/__main__.py` holds the data role's class, `Lake` (the
+  SDK's `event_contracts.Feed`, open-meridian 0.35: each role one class),
+  and registers it with `meridian.run`, declaring the catalogue, the storage
+  and the settings (`declaration.py`) and the pages (`page.py`): `run`
+  serves them, delivers the settings to `Lake.on_settings`, hands what the
+  lake wants to `Lake.on_observations_wanted` and `on_want_withdrawn`, and
+  runs `Lake.run`, which keeps each standing want current, polling: Polymarket US's market WebSocket
   needs an account's key, which this version never holds.
 - **Polymarket US's vocabulary is read in one place.** `venue.py` is the
   HTTP client (the standard library's: no third-party dependency), every
@@ -33,7 +35,7 @@ trades, and never calls the authenticated API (api.polymarket.us).
   the synthetic exchanges in `src/polymarket_us/synthetic/`, or a
   developer's recorded ones.
 - **What every data plugin of an event-contract venue does is the SDK's**
-  (open-meridian 0.33.1; nothing is copied between plugins, the product
+  (open-meridian 0.35.1; nothing is copied between plugins, the product
   owner, 2026-10-13): naming each subject, resolving the cash and the venue,
   recording prices, quotes and outcomes, and answering wants and keeping
   them current are `meridian.roles.data.event_contracts.Feed`, over the

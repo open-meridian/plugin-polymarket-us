@@ -1,5 +1,40 @@
 # Changelog
 
+## 0.7.0
+
+On open-meridian 0.35.1, contract v29 (rulings 1003, 1004, 1005, 1009 to
+1029), on core v29's harness.
+
+- **One class for its role** (open-meridian 0.35: each role is one class). The
+  data role's work is `Lake`, the SDK's `event_contracts.Feed` over Polymarket
+  US's conversion, registered with `meridian.run`, which applies the first
+  settings (`Lake.on_settings`: sample data switched, the raw store tended)
+  before anything is heard and watches them again should their stream break,
+  serves the pages, sets the figures on each heartbeat, hands what the lake
+  wants to the class and starts `Lake.run` -- the SDK's feed's work and the
+  plugin's health -- again after a backoff should it fail. Each minute the
+  licences are read again and whether Polymarket US answers is said on its
+  health. The tasks and the process exit it wired by hand are gone.
+- **`meridian plugin migrate --to 0.35.0`** moved the pins and rewrote the
+  feed's construction and handlers (the connection no longer given to it;
+  `on_want` and `on_withdrawn` as `on_observations_wanted` and
+  `on_want_withdrawn`). The entry point, the preview's hearing
+  (`Recorder.hear`) and the e2e's reader (three role classes -- `custody`,
+  `reporting`, `signal` -- on `meridian.run_async`, its acts made through
+  them) were moved by hand.
+- **The venue resolved through the role** (ruling 1023): open-meridian
+  0.35.0's feed resolved its venue through the connection, which makes no
+  act under `meridian.run`, so the e2e's wants were declined; 0.35.1 fixes
+  it, and the pin moved there (`meridian plugin migrate --to 0.35.1`: only
+  the pins move). The e2e's reader hears only what is recorded once it
+  follows (`seed = False`), so its first read is the lake's first ask.
+- **A market's category** (ruling 954) is not recorded yet: contract v29
+  gives a data plugin no act carrying `BinaryEventContract.category`.
+- **The pins:** open-meridian 0.35.1 and plugin-python:0.35.1 by tag and
+  digest (`sha256:cdc92bc9...71a9b614`); core's runtime and harness
+  `1ae36f0` (merged as 3f99222, chart 0.1.339) by digest; meridian 0.1.56
+  in check.yaml.
+
 ## 0.6.1
 
 SDK 0.33.4: raw-record writes and enum conversion fixes (ruling 937).
