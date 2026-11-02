@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.7.0
+
+On open-meridian 0.35.0, contract v29 (rulings 1003, 1004, 1005, 1009 to
+1029), on core v29's harness.
+
+- **One class for its role** (open-meridian 0.35: each role is one class).
+  The data role's work is `Lake`, the SDK's `event_contracts.Feed` over
+  Polymarket US's conversion, registered with `meridian.run`, which
+  delivers the settings (`Lake.on_settings`: sample data switched, the raw
+  store tended), serves the pages, sets the figures on each heartbeat, hands
+  what the lake wants to the class and starts `Lake.run` again after a
+  backoff should it fail. As before, what the lake wants waits for the
+  settings to say where to answer from, and each minute the licences are
+  read again and whether Polymarket US answers is said on its health. The
+  tasks and the process exit it wired by hand are gone.
+- **`meridian plugin migrate --to 0.35.0`** moved the pins and rewrote the
+  feed's construction and handlers (the connection no longer given to it;
+  `on_want` and `on_withdrawn` as `on_observations_wanted` and
+  `on_want_withdrawn`). The entry point, the preview's hearing
+  (`Recorder.hear`) and the e2e's reader (three role classes -- `custody`,
+  `reporting`, `signal` -- on `meridian.run_async`, its acts made through
+  them) were moved by hand.
+- **A market's category** (ruling 954) is not recorded yet: contract v29
+  gives a data plugin no act carrying `BinaryEventContract.category`.
+- **The pins:** open-meridian 0.35.0 and plugin-python:0.35.0 by tag and
+  digest (`sha256:2eebe6ea...8f960740`); core's runtime and harness
+  `1ae36f0` (merged as 3f99222, chart 0.1.339) by digest; meridian 0.1.55
+  in check.yaml.
+
 ## 0.6.1
 
 SDK 0.33.4: raw-record writes and enum conversion fixes (ruling 937).
