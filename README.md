@@ -14,21 +14,21 @@ key and no account: Polymarket US's public gateway needs none. It never
 trades.
 
 What it does alike with every data plugin of an event-contract venue is the
-SDK's (`meridian.roles.data.event_contracts`, open-meridian 0.35.1), never
+SDK's (`meridian.roles.data.event_contracts`, open-meridian 0.36.1), never
 copied from another plugin: it runs the SDK's data suite and its checks for
 an event-contract venue unchanged against its own conversion.
 
-**Status.** 0.7.0, built on open-meridian 0.35.1 (contract v29; from 0.7.0 its work is one class for its role, `Lake` -- the SDK's event-contract feed -- registered with `meridian.run`; contract v28: no bars, and why, below; its feed delay reported, a crossed quote recorded invalid at the edge, and its published fee schedule on Connection; contract v27, its e2e in full on core's harness, which holds QCEX; contract v26, a range market's bounds on its contract, its work the SDK's role helpers; contract v25's whole declaration and docs/, which a deployment shows on its Documentation tab), holding the
+**Status.** 0.8.0, built on open-meridian 0.36.1 (contract 30: each dataset describes Polymarket US's terms in words and how a gap in it is recovered, no licence declared; each contract's category stated with its terms; contract v29: from 0.7.0 its work is one class for its role, `Lake` -- the SDK's event-contract feed -- registered with `meridian.run`; contract v28: no bars, and why, below; its feed delay reported, a crossed quote recorded invalid at the edge, and its published fee schedule on Connection; contract v27, its e2e in full on core's harness, which holds QCEX; contract v26, a range market's bounds on its contract, its work the SDK's role helpers; contract v25's whole declaration and docs/, which a deployment shows on its Documentation tab), holding the
 role `data`.
 
 ## What it does
 
 Two datasets, declared from code in its catalogue (`declaration.py`):
 
-| Dataset | Data | Modes | Day | Default licence |
+| Dataset | Data | Modes | Day | A gap in it |
 |---|---|---|---|---|
-| `<instance>:live` | each contract's last trade, best bid and offer as prices; its best bid and offer with sizes as a quote | pull, stream | `Etc/UTC`, ending at 00:00 | kept two days |
-| `<instance>:outcomes` | each contract's outcome once Polymarket US settles it | push | `Etc/UTC`, ending at 00:00 | kept |
+| `<instance>:live` | each contract's last trade, best bid and offer as prices; its best bid and offer with sizes as a quote | pull, stream | `Etc/UTC`, ending at 00:00 | not fetched again (`stream_only`) |
+| `<instance>:outcomes` | each contract's outcome once Polymarket US settles it | push | `Etc/UTC`, ending at 00:00 | not fetched again (`stream_only`) |
 
 - **Polled from the public gateway.** It reads `gateway.polymarket.us`
   (docs.polymarket.us, "API Reference"): a market by its slug
@@ -102,12 +102,16 @@ Two datasets, declared from code in its catalogue (`declaration.py`):
   `source_silent` (Polymarket US states nothing for it). A standing want
   keeps its subjects current, at most once a second, until the lake
   withdraws it.
-- **Its licences.** `live` keeps its rows two days by default (the plan's
-  Q21 for a live dataset); `outcomes` keeps its rows, since an outcome is
-  read back by version. The deployment admin states the deployment's own
-  licence on the Data sources page, which replaces the default; the default
-  claims nothing about Polymarket US's terms, which are for the deployment
-  admin and whoever uses the deployment to settle.
+- **Polymarket US's terms, in words** (contract 30, ruling 1032): each
+  dataset describes them (`declared.TERMS`) -- free, no key; no terms of
+  its own for the data beyond Polymarket US's Terms of Service -- shown on
+  Data sources and in `docs/terms.md`. The plugin declares no licence: the
+  deployment admin states the deployment's own on the Data sources page
+  (two days kept suits the live dataset, the plan's Q21; `outcomes` kept, an
+  outcome read back by version); until one is set, the lake keeps the rows
+  and reads every use right restrictively. **Its category** (contract 30,
+  1035): the market's own `category`, in its word (`sports`, `crypto`),
+  stated with its terms at its resolve.
 - **The venue** is named by its MIC, `QCEX` (as Kalshi's plugin names
   Kalshi by `KLSH`), and from contract v26 each contract is sent with its
   ticker -- its slug under the `ticker` scheme, `QCEX` in source -- beside

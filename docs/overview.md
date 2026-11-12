@@ -113,5 +113,8 @@ data does not state whether an event's markets exclude one another either.
 Polymarket US's answers, as received, in the storage your deployment gives
 the plugin, for 30 days by default, each row naming the answer it came from.
 Past that window, a day's answers are archived, kept or deleted as you set
-it. Its live dataset's default licence keeps its rows two days; its outcomes
-dataset's keeps them.
+it. What the lake keeps of each dataset is your deployment's licence, set
+on the Data sources page: until one is set, the lake keeps the rows and
+reads every use right restrictively. Each dataset describes Polymarket US's
+published terms in words, shown there. A gap in either dataset is not
+fetched again: Polymarket US serves no history of its book.

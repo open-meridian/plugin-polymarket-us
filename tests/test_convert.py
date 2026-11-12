@@ -56,6 +56,12 @@ def test_a_market_is_one_binary_contract_its_yes_side_paying_one_dollar() -> Non
     assert convert.contract(yes_no, "raw").title == "Champion: Herons"
 
 
+def test_its_category_is_the_markets_own_word() -> None:
+    # Contract 30 (1035): stated with its terms at its resolve, as given.
+    assert convert.contract(MARKET | {"category": "sports"}, "raw").category == "sports"
+    assert convert.contract(MARKET | {"category": None}, "raw").category == ""
+
+
 def test_a_market_not_one_long_and_one_short_side_is_not_binary() -> None:
     three = MARKET | {"marketSides": [_side("A", True), _side("B", True), _side("C", False)]}
     assert not convert.contract(three, "raw").binary

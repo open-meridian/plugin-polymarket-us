@@ -1,5 +1,36 @@
 # Changelog
 
+## 0.8.0
+
+On open-meridian 0.36.1, contract 30, on core aae501d's harness (contract v30,
+chart 0.1.538).
+
+- **Polymarket US's terms in words** (ruling 1032): `licence_default` is gone
+  from the contract. `meridian plugin migrate --to 0.36.0` wrote each licence
+  as words ("Kept by the lake; kept 2 days at most."), which said what the
+  lake did; each dataset now describes Polymarket US's terms
+  (`declared.TERMS`): its public gateway free, no key; no rate limit and no
+  terms of its own for the data stated in its documentation, beyond its
+  Terms of Service; its exchange (QCX LLC, MIC QCEX) open to eligible
+  persons in the United States. The plugin declares no licence: until a
+  deployment admin sets one on Data sources, the lake keeps the rows and
+  reads every use right restrictively.
+- **How a gap is recovered** (W10.14): both datasets `stream_only` --
+  Polymarket US serves no history of a book, nor of a settlement before it
+  is final, and a want of `outcomes` is not answered. No sessions calendar,
+  no `most_shards`.
+- **A contract's category stated** (1035): the market's own `category`, in
+  its word (`sports`, `crypto`), stated with its terms at ResolveIdentifier.
+- **open-meridian 0.36.1** (`meridian plugin migrate --to 0.36.1`, pins
+  only): on 0.36.0 a range market's bounds were stated with no unit, which
+  core refuses; 0.36.1 states bounds only with their unit, which a price
+  bound here leaves empty.
+- **Pins**: open-meridian 0.36.1 and its base by digest; meridian 0.1.60 in
+  the check workflow; core's runtime and harness at `aae501d`, by digest. The
+  e2e reads each dataset's terms in words, its gap recovery and no licence
+  set before the admin licenses them.
+- The tests' raw store stand-in takes `RawStore.tend`'s signature (mypy).
+
 ## 0.7.0
 
 On open-meridian 0.35.1, contract v29 (rulings 1003, 1004, 1005, 1009 to
