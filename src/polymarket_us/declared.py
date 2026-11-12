@@ -17,13 +17,16 @@ upload`:
   again each minute until its outcome is recorded. It names no business
   date; its day is declared as the live dataset's.
 
-**Its licence defaults**: `live` keeps its rows two days (the plan's Q21 for
-a live dataset). `outcomes` is kept: an outcome is read back by the version
-in force or as of a time, which a dataset not kept cannot answer (a plugin's
-choice within contract v23, approved 2026-10-13). Neither default claims
-anything about Polymarket US's terms, which the deployment admin settles
-with whoever uses the deployment; the admin states the deployment's licence
-on the Data sources page, which replaces it.
+**Its terms and pricing** (contract 30, ruling 1032): no dataset declares a
+licence. Each describes Polymarket US's published terms in plain words
+(`TERMS`), shown on Data sources and in the plugin's docs: the deployment
+admin settles them and sets the deployment's licence on the Data sources
+page, which is the one enforced.
+
+**How a gap is recovered** (W10.14): both datasets are `stream_only` --
+Polymarket US serves no history of a book, nor of a market's settlement
+before it is final, and a want of `outcomes` is not answered. No dataset
+names a sessions calendar.
 
 `venue_id` is empty: the venue master's ID for Polymarket US is minted by
 the platform, not known to the code a catalogue is declared from, so each
@@ -40,7 +43,7 @@ polls instead).
 """
 
 import meridian
-from meridian import DatasetDeclaration, DatasetLicence
+from meridian import DatasetDeclaration
 
 VENDOR = "Polymarket US"
 SAMPLE_DATA = "sample_data"
@@ -64,6 +67,14 @@ SETTINGS = [
     ),
 ]
 
+#: Polymarket US's published terms, in plain words (ruling 1032).
+TERMS = (
+    "Polymarket US's public market data API (gateway.polymarket.us): free, no key or account; "
+    "its documentation states no rate limit and no terms of its own for the data, which falls "
+    "under Polymarket US's Terms of Service for its site and services. Its exchange (QCX "
+    "LLC, MIC QCEX) is open to eligible persons in the United States."
+)
+
 CATALOGUE = [
     DatasetDeclaration(
         key="live",
@@ -72,7 +83,8 @@ CATALOGUE = [
         modes=["pull", "stream"],
         cadence=1,
         history=0,
-        licence_default=DatasetLicence(kept=True, retention_days=2),
+        terms_and_pricing=TERMS,
+        gap_recovery="stream_only",
         day_time_zone="Etc/UTC",
         day_end_minute=0,
     ),
@@ -83,7 +95,8 @@ CATALOGUE = [
         modes=["push"],
         cadence=60,
         history=0,
-        licence_default=DatasetLicence(kept=True),
+        terms_and_pricing=TERMS,
+        gap_recovery="stream_only",
         day_time_zone="Etc/UTC",
         day_end_minute=0,
     ),

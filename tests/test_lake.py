@@ -26,7 +26,16 @@ class Store(RawStore):
         super().__init__(root, KIND)
         self.tended: list[tuple[int, str, date]] = []
 
-    async def tend(self, plugin: Any, window_days: int, past: str, today: date) -> None:
+    async def tend(
+        self,
+        plugin: Any,
+        window_days: int | None = None,
+        past: str | None = None,
+        today: date | None = None,
+        *,
+        settings: Any = None,
+    ) -> None:
+        assert window_days is not None and past is not None and today is not None
         self.tended.append((window_days, past, today))
 
 

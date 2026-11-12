@@ -283,7 +283,13 @@ def contract(
         read_at_ns=received_ns,
         floor=floor,
         cap=cap,
+        category=_text(body.get("category"))[:MOST_CATEGORY],
     )
+
+
+#: The longest category a contract's terms state (meridian.v1.
+#: BinaryEventContract.category).
+MOST_CATEGORY = 64
 
 
 def _levels(

@@ -4,8 +4,10 @@ harness (contracts v19 to v27), with sample data, beside a reader
 
 1. Launched: the plugin registers its catalogue; the deployment admin's tool
    lists its two datasets: `live`, of prices and quotes, on the UTC day
-   ending at 00:00, pulled or streamed, its default licence kept two days;
-   and `outcomes`, pushed, kept by default.
+   ending at 00:00, pulled or streamed, and `outcomes`, pushed, a gap in
+   either not fetched again (`stream_only`). From contract 30 (ruling 1032)
+   each describes Polymarket US's terms in words and declares no licence:
+   none set yet, each is read restrictively, kept.
 2. Sample data on: nothing is asked of Polymarket US and no record minted
    until the lake wants something -- never the venue's list. The reader then
    names a market as a custodian's book holds it, by the custodian's own
@@ -15,9 +17,8 @@ harness (contracts v19 to v27), with sample data, beside a reader
    settled, and the dollar by ISO 4217. Core v27's stand-in platform holds
    Polymarket US in its venue master by its MIC (QCEX), so it mints each
    market's record by its ticker under QCEX, paying one dollar.
-3. Licensed and entitled: the admin sets each dataset's licence as its
-   default says -- `live` kept two days, `outcomes` kept -- and entitles the
-   reader to both.
+3. Licensed and entitled: the admin sets each dataset's licence -- `live`
+   kept two days, `outcomes` kept -- and entitles the reader to both.
 4. Prices wanted and recorded: the reader follows the market and reads its
    latest; the lake asks the plugin, which reads the record (W3.6), names it
    Polymarket US's contract by the custodian's symbol, joins its slug to it
@@ -190,16 +191,20 @@ def run():
         return held if DATASET in held else None
     held = until(90, datasets, "step 1, the dataset was not listed")
     must(OUTCOMES in held, f"step 1, the outcomes dataset is listed: {sorted(held)}")
-    entry, licence = held[OUTCOMES]["catalogue_entry"], held[OUTCOMES]["licence"]
-    must(entry["modes"] == ["push"] and licence["kept"] is True
-         and licence["set_by_the_deployment"] is False,
-         f"step 1, outcomes pushed and kept by default: {entry}, {licence}")
-    entry, licence = held[DATASET]["catalogue_entry"], held[DATASET]["licence"]
+    # Contract 30 (ruling 1032): Polymarket US's terms in words, no licence
+    # declared; none set yet, each is read restrictively, kept.
+    for key in (DATASET, OUTCOMES):
+        entry, licence = held[key]["catalogue_entry"], held[key]["licence"]
+        must("Terms of Service" in entry.get("terms_and_pricing", "")
+             and entry.get("gap_recovery") == "stream_only"
+             and licence["set_by_the_deployment"] is False and licence["kept"] is True,
+             f"step 1, {key}: Polymarket US's terms in words, stream_only, no licence set: "
+             f"{entry}, {licence}")
+    entry = held[OUTCOMES]["catalogue_entry"]
+    must(entry["modes"] == ["push"], f"step 1, outcomes pushed: {entry}")
+    entry = held[DATASET]["catalogue_entry"]
     must(entry["modes"] == ["pull", "stream"] and entry["day_time_zone"] == "Etc/UTC"
          and entry.get("day_end_minute", 0) == 0, f"step 1, its entry: {entry}")
-    must(licence["kept"] is True and licence["retention_days"] == 2
-         and licence["set_by_the_deployment"] is False,
-         f"step 1, its default licence kept two days: {licence}")
 
     # 2. Sample data: nothing asked, nothing minted; then the reader's
     # records, as a custodian's book holds them.
@@ -227,12 +232,12 @@ def run():
         ids = read(f"/resolve?{query}")
     subject, ranged, resolved, usd = ids["contract"], ids["range"], ids["resolved"], ids["usd"]
 
-    # 3. Licensed as the default says, and entitled.
+    # 3. Licensed, and entitled.
     runner("licence", DATASET, "kept=true", "retention_days=2", "display=true",
            "personal_use=false", "note=Kept two days, for the e2e's reader.")
     runner("entitle", "--instance", "reader", DATASET, "note=The e2e's reader.")
     runner("licence", OUTCOMES, "kept=true", "retention_days=0", "display=true",
-           "personal_use=false", "note=Kept, as the default says, for the e2e's reader.")
+           "personal_use=false", "note=Kept, for the e2e's reader.")
     runner("entitle", "--instance", "reader", OUTCOMES, "note=The e2e's reader.")
 
     # 4. Prices wanted, recorded, read and heard.
@@ -378,8 +383,8 @@ def run():
          f"step 8, no miss: the venue held by its MIC: {lines}")
 
     print(f"e2e OK in {int(time.time() - started)}s: on core's plugin harness, the live "
-          "dataset of prices and quotes listed by the deployment admin's tool, kept two days "
-          "by default; nothing asked of Polymarket US and no record minted before a want; a "
+          "dataset of prices and quotes listed by the deployment admin's tool with "
+          "Polymarket US's terms in words, licensed kept two days; nothing asked of Polymarket US and no record minted before a want; a "
           "custodian's contract, known by its own symbol and minted by the platform by Polymarket "
           "US's ticker under QCEX, read and named, its slug joined to it, and its last trade, bid and offer recorded per contract in dollars, "
           "read and heard; its quote with sizes; no event group; the market of three sides "
