@@ -14,11 +14,11 @@ key and no account: Polymarket US's public gateway needs none. It never
 trades.
 
 What it does alike with every data plugin of an event-contract venue is the
-SDK's (`meridian.roles.data.event_contracts`, open-meridian 0.36.1), never
+SDK's (`meridian.roles.data.event_contracts`, open-meridian 0.36.2), never
 copied from another plugin: it runs the SDK's data suite and its checks for
 an event-contract venue unchanged against its own conversion.
 
-**Status.** 0.8.0, built on open-meridian 0.36.1 (contract 30: each dataset describes Polymarket US's terms in words and how a gap in it is recovered, no licence declared; each contract's category stated with its terms; contract v29: from 0.7.0 its work is one class for its role, `Lake` -- the SDK's event-contract feed -- registered with `meridian.run`; contract v28: no bars, and why, below; its feed delay reported, a crossed quote recorded invalid at the edge, and its published fee schedule on Connection; contract v27, its e2e in full on core's harness, which holds QCEX; contract v26, a range market's bounds on its contract, its work the SDK's role helpers; contract v25's whole declaration and docs/, which a deployment shows on its Documentation tab), holding the
+**Status.** 0.8.1, built on open-meridian 0.36.2 (contract 30: each contract's outcome keeps its first determination's valid time, every later stage a new version of its key (0.36.2); each dataset describes Polymarket US's terms in words and how a gap in it is recovered, no licence declared; each contract's category stated with its terms; contract v29: from 0.7.0 its work is one class for its role, `Lake` -- the SDK's event-contract feed -- registered with `meridian.run`; contract v28: no bars, and why, below; its feed delay reported, a crossed quote recorded invalid at the edge, and its published fee schedule on Connection; contract v27, its e2e in full on core's harness, which holds QCEX; contract v26, a range market's bounds on its contract, its work the SDK's role helpers; contract v25's whole declaration and docs/, which a deployment shows on its Documentation tab), holding the
 role `data`.
 
 ## What it does

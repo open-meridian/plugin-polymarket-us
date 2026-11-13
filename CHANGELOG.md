@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.8.1
+
+On open-meridian 0.36.2, contract 30, on core aae501d's harness (contract v30,
+chart 0.1.538).
+
+- **open-meridian 0.36.2** (`meridian plugin migrate --to 0.36.2`, pins only;
+  nothing left by hand): the row-key rule (spec/the-lake rule 5, ruled
+  2026-11-12) in the SDK's event-contract feed. Each contract's outcome
+  (`<code>:outcome`) keeps its first determination's valid time; a later
+  stage, an amended or disputed result or a re-proposal is a new version of
+  the same key, its own determination's time its `event` source time where
+  Polymarket US states it. No code of the plugin's changed: its outcomes are
+  the SDK's.
+- **Pins**: open-meridian 0.36.2 and its base by digest; meridian 0.1.60 in
+  the check workflow and core's `aae501d` runtime and harness images, as
+  before.
+
 ## 0.8.0
 
 On open-meridian 0.36.1, contract 30, on core aae501d's harness (contract v30,
